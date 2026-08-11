@@ -9,6 +9,7 @@ from aegis_ingestion.adapters import JsonReplayAdapter
 from aegis_ingestion.external import KafkaEventPublisher, MinioRawPayloadStore, MinioSettings
 from aegis_ingestion.idempotency import RedisIdempotencyStore
 from aegis_ingestion.live_adapters import OpenMeteoWeatherAdapter
+from aegis_ingestion.bipad_adapters import BipadIncidentAdapter, BipadRiverAdapter
 from aegis_ingestion.normalize import EventNormalizer
 from aegis_ingestion.ports import ingest_records
 from aegis_ingestion.reliability import RetryPolicy, SourceHealthRegistry
@@ -76,6 +77,38 @@ def pull_weather() -> dict[str, int | str]:
         return {"source_type": "weather", "published": published}
     finally:
         publisher.close()
+
+
+def _pull_adapter(adapter, source_type: str) -> dict[str, int | str]:
+    raw_store, publisher, idempotency = _dependencies()
+    try:
+        records = retry_policy.run(lambda: list(adapter.read()))
+        published = ingest_records(
+            records,
+            raw_store,
+            publisher,
+            EventNormalizer(),
+            idempotency_store=idempotency,
+            health_registry=health_registry,
+        )
+        return {"source_type": source_type, "published": published}
+    finally:
+        publisher.close()
+
+
+@app.post("/pull/hydrology")
+def pull_hydrology() -> dict[str, int | str]:
+    return _pull_adapter(BipadRiverAdapter(), "hydrology")
+
+
+@app.post("/pull/roads")
+def pull_roads() -> dict[str, int | str]:
+    return _pull_adapter(BipadIncidentAdapter("infrastructure", {"limit": "25", "search": "road"}), "infrastructure")
+
+
+@app.post("/pull/reports")
+def pull_reports() -> dict[str, int | str]:
+    return _pull_adapter(BipadIncidentAdapter("report", {"limit": "25", "search": "flood"}), "report")
 
 
 @app.post("/replay/{source_type}")
