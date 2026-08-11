@@ -19,6 +19,8 @@ The runnable service persists raw records to MinIO and publishes normalized even
 
 Open-Meteo weather can be pulled for the default Sindhupalchok coordinates with `POST /pull/weather`. The provider strategy and deferred live-source decisions are recorded in [`docs/architecture/adr/0002-live-source-provider-strategy.md`](../../docs/architecture/adr/0002-live-source-provider-strategy.md).
 
+BIPAD-backed pulls are available through `POST /pull/hydrology`, `POST /pull/roads`, and `POST /pull/reports`. The hydrology adapter maps BIPAD river levels and danger thresholds; incident adapters classify road-related and flood-related reports without pretending that every incident is a road closure. Incomplete river observations are retained as explicit `NORMAL` events without fabricated measurements.
+
 Replay a fixture after the Docker stack is running:
 
 ```powershell

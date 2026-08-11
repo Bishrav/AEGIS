@@ -73,6 +73,7 @@ flowchart LR
 - Runnable replay API for the four MVP signal categories.
 - Retry with bounded exponential backoff and source-health reporting.
 - Redis-backed idempotency claims for restart-safe ingestion.
+- Live Open-Meteo weather and BIPAD hydrology/incident adapters.
 
 ## Architecture
 
@@ -128,7 +129,7 @@ docs/                    Architecture, ADRs, API, security, and operations
 
 - Phase 0 — GitHub portfolio standard, documentation, contribution workflow, and project evidence structure. **Complete.**
 - Phase 1 — Docker platform foundation, service scaffolding, health checks, schemas, and Kafka topics. **Complete and runtime-verified.**
-- Phase 2 — Source adapters, raw payload storage, normalization, deduplication, retries, and replay fixtures. **In progress — external storage, Kafka publishing, retries, health, and Redis idempotency implemented.**
+- Phase 2 — Source adapters, raw payload storage, normalization, deduplication, retries, and replay fixtures. **In progress — Open-Meteo and BIPAD live adapters now verified; integration hardening remains.**
 - Phase 3 — NLP extraction, anomaly detection, forecasting baselines, and model evaluation.
 - Phase 4 — Correlation, Neo4j graph intelligence, deterministic risk scoring, and auditability.
 - Phase 5 — Hybrid RAG, evidence packaging, provider-neutral LLM reasoning, and citation validation.

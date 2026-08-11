@@ -38,5 +38,8 @@ The Phase 2 service currently exposes these unversioned local endpoints until th
 - `GET /sources/health`
 - `POST /replay/{source_type}`
 - `POST /pull/weather`
+- `POST /pull/hydrology`
+- `POST /pull/roads`
+- `POST /pull/reports`
 
 The published API contract will be OpenAPI-generated and tested with contract tests before the endpoint is marked complete.
