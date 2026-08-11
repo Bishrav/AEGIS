@@ -5,6 +5,7 @@ from aegis_ingestion.adapters import JsonReplayAdapter
 from aegis_ingestion.models import RawRecord
 from aegis_ingestion.normalize import EventNormalizer
 from aegis_ingestion.ports import InMemoryEventPublisher, InMemoryRawPayloadStore, ingest_records
+from aegis_ingestion.reliability import RetryPolicy, SourceHealthRegistry
 
 
 FIXTURES = Path(__file__).parents[1] / "fixtures"
@@ -60,6 +61,35 @@ class IngestionTests(unittest.TestCase):
             publisher.events[0].raw_object_uri,
             "memory://raw/fixture-weather-nepal/weather-sindhupalchok-2026-08-10T09:00:00Z.json",
         )
+
+    def test_retry_policy_retries_transient_failure(self):
+        attempts = 0
+
+        def flaky_operation():
+            nonlocal attempts
+            attempts += 1
+            if attempts < 3:
+                raise RuntimeError("temporary source failure")
+            return "ok"
+
+        result = RetryPolicy(max_attempts=3, initial_delay_seconds=0).run(flaky_operation)
+        self.assertEqual(result, "ok")
+        self.assertEqual(attempts, 3)
+
+    def test_source_health_records_success(self):
+        record = next(JsonReplayAdapter("weather", FIXTURES / "weather.json").read())
+        health = SourceHealthRegistry()
+        ingest_records(
+            [record],
+            InMemoryRawPayloadStore(),
+            InMemoryEventPublisher(),
+            EventNormalizer(),
+            health_registry=health,
+        )
+        snapshot = health.snapshot()
+        self.assertEqual(snapshot[0]["source_id"], "fixture-weather-nepal")
+        self.assertEqual(snapshot[0]["status"], "healthy")
+        self.assertEqual(snapshot[0]["success_count"], 1)
 
 
 if __name__ == "__main__":

@@ -7,11 +7,16 @@ from fastapi import FastAPI, HTTPException
 
 from aegis_ingestion.adapters import JsonReplayAdapter
 from aegis_ingestion.external import KafkaEventPublisher, MinioRawPayloadStore, MinioSettings
+from aegis_ingestion.idempotency import RedisIdempotencyStore
+from aegis_ingestion.live_adapters import OpenMeteoWeatherAdapter
 from aegis_ingestion.normalize import EventNormalizer
 from aegis_ingestion.ports import ingest_records
+from aegis_ingestion.reliability import RetryPolicy, SourceHealthRegistry
 
 app = FastAPI(title="AEGIS Ingestion Service", version="0.1.0")
 FIXTURES = Path(__file__).parent / "fixtures"
+health_registry = SourceHealthRegistry()
+retry_policy = RetryPolicy()
 
 
 def _dependencies():
@@ -25,6 +30,7 @@ def _dependencies():
             )
         ),
         KafkaEventPublisher(os.getenv("KAFKA_BOOTSTRAP_SERVERS", "redpanda:9092")),
+        RedisIdempotencyStore(os.getenv("REDIS_URL", "redis://redis:6379/0")),
     )
 
 
@@ -36,12 +42,40 @@ def health() -> dict[str, str]:
 @app.get("/ready")
 def ready() -> dict[str, str]:
     try:
-        raw_store, publisher = _dependencies()
+        raw_store, publisher, idempotency = _dependencies()
+        idempotency.client.ping()
         publisher.close()
         del raw_store
     except Exception as exc:
         raise HTTPException(status_code=503, detail=f"dependencies unavailable: {exc}") from exc
     return {"status": "ready", "service": "ingestion"}
+
+
+@app.get("/sources/health")
+def source_health() -> dict[str, list[dict[str, object]]]:
+    return {"sources": health_registry.snapshot()}
+
+
+@app.post("/pull/weather")
+def pull_weather() -> dict[str, int | str]:
+    adapter = OpenMeteoWeatherAdapter(
+        latitude=float(os.getenv("AEGIS_WEATHER_LATITUDE", "27.95")),
+        longitude=float(os.getenv("AEGIS_WEATHER_LONGITUDE", "85.68")),
+    )
+    raw_store, publisher, idempotency = _dependencies()
+    try:
+        records = retry_policy.run(lambda: list(adapter.read()))
+        published = ingest_records(
+            records,
+            raw_store,
+            publisher,
+            EventNormalizer(),
+            idempotency_store=idempotency,
+            health_registry=health_registry,
+        )
+        return {"source_type": "weather", "published": published}
+    finally:
+        publisher.close()
 
 
 @app.post("/replay/{source_type}")
@@ -50,11 +84,18 @@ def replay(source_type: str) -> dict[str, int | str]:
     fixture = FIXTURES / fixture_name
     if not fixture.exists():
         raise HTTPException(status_code=404, detail=f"no fixture for source type: {source_type}")
-    raw_store, publisher = _dependencies()
+    raw_store, publisher, idempotency = _dependencies()
     try:
-        records = JsonReplayAdapter(source_type, fixture).read()
-        published = ingest_records(records, raw_store, publisher, EventNormalizer())
+        adapter = JsonReplayAdapter(source_type, fixture)
+        records = retry_policy.run(lambda: list(adapter.read()))
+        published = ingest_records(
+            records,
+            raw_store,
+            publisher,
+            EventNormalizer(),
+            idempotency_store=idempotency,
+            health_registry=health_registry,
+        )
         return {"source_type": source_type, "published": published}
     finally:
         publisher.close()
-

@@ -18,12 +18,17 @@ services:
         condition: service_healthy
       minio:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     environment:
       KAFKA_BOOTSTRAP_SERVERS: redpanda:9092
       S3_ENDPOINT_URL: http://minio:9000
       S3_ACCESS_KEY: ${MINIO_ROOT_USER:-aegis}
       S3_SECRET_KEY: ${MINIO_ROOT_PASSWORD:-aegis_dev_password}
       S3_BUCKET: aegis-raw
+      REDIS_URL: redis://redis:6379/0
+      AEGIS_WEATHER_LATITUDE: 27.95
+      AEGIS_WEATHER_LONGITUDE: 85.68
     ports:
       - "8002:8000"
     healthcheck:

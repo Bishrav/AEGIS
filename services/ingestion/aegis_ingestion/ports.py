@@ -39,9 +39,13 @@ def ingest_records(
     raw_store: InMemoryRawPayloadStore,
     publisher: InMemoryEventPublisher,
     normalizer,
+    idempotency_store=None,
+    health_registry=None,
 ) -> int:
     published = 0
     for record in records:
+        if idempotency_store is not None and not idempotency_store.claim(record):
+            continue
         if not raw_store.put_if_absent(record):
             continue
         try:
@@ -50,6 +54,10 @@ def ingest_records(
                 event = replace(event, raw_object_uri=raw_store.object_uri(record))
             publisher.publish(event)
             published += 1
+            if health_registry is not None:
+                health_registry.success(record.source_id)
         except (KeyError, TypeError, ValueError) as exc:
             publisher.dead_letter(record, str(exc))
+            if health_registry is not None:
+                health_registry.failure(record.source_id, exc)
     return published
