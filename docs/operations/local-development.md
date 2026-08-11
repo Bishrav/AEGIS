@@ -16,6 +16,8 @@ docker compose up -d
 docker compose ps
 ```
 
+The one-shot `redpanda-init` container provisions the topics declared in `schemas/topics.yaml` and exits successfully after creation. It is safe to rerun because existing topics are left unchanged.
+
 ## Local service URLs
 
 | Service | URL |

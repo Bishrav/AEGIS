@@ -45,7 +45,7 @@ services:
     volumes:
       - redpanda_data:/var/lib/redpanda/data
     healthcheck:
-      test: ["CMD-SHELL", "rpk cluster health --brokers=localhost:9092"]
+      test: ["CMD-SHELL", "rpk cluster health"]
       interval: 10s
       timeout: 5s
       retries: 10
@@ -59,6 +59,20 @@ services:
       KAFKA_BROKERS: redpanda:9092
     ports:
       - "${REDPANDA_CONSOLE_PORT:-8080}:8080"
+
+  redpanda-init:
+    image: redpandadata/redpanda:v24.3.9
+    depends_on:
+      redpanda:
+        condition: service_healthy
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - >-
+        for topic in raw.weather raw.hydrology raw.reports raw.infrastructure
+        normalized.events ai.nlp.completed ai.anomaly.completed ai.forecast.completed
+        correlation.candidates incidents.updated risk.updated alerts.created audit.events;
+        do rpk topic create "$$topic" --brokers redpanda:9092 --partitions 1 --replicas 1 || true;
+        done
 
   redis:
     image: redis:7.4-alpine
