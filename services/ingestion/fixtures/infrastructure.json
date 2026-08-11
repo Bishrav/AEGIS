@@ -1,0 +1,19 @@
+{
+  "records": [
+    {
+      "source_id": "fixture-infrastructure-nepal",
+      "record_id": "road-arniko-2026-08-10T11:10:00Z",
+      "observed_at": "2026-08-10T11:10:00Z",
+      "payload": {
+        "road": "Araniko Highway",
+        "status": "closed",
+        "reason": "landslide debris",
+        "latitude": 27.95,
+        "longitude": 85.68,
+        "district": "Sindhupalchok",
+        "source_confidence": 0.9
+      }
+    }
+  ]
+}
+

@@ -2,7 +2,7 @@
 
 Autonomous Event & Global Intelligence System — Nepal flood-risk intelligence MVP.
 
-> Portfolio status: Phase 0 — repository and portfolio foundation in progress. The target vertical slice is live/replayed weather, hydrology, road-disruption, and public-report data transformed into explainable flood-risk incidents.
+> Portfolio status: Phase 2 — ingestion and normalization in progress. Phase 1 platform foundation is complete and runtime-verified; the current work adds replayable weather, hydrology, road-disruption, and public-report ingestion.
 
 ## Project Links
 
@@ -48,6 +48,7 @@ flowchart LR
 - Analyst alert acknowledgement, incident notes, and status workflow.
 - Role-based access for `ADMIN`, `ANALYST`, and `VIEWER`.
 - Replay mode for reproducible incident demonstrations.
+- Frozen replay fixtures for all four MVP signal categories.
 
 ### Engineering Features
 
@@ -66,6 +67,8 @@ flowchart LR
 - PostgreSQL, Redis, Neo4j, MinIO, Kafka, Prometheus, and Grafana.
 - Unit, contract, integration, replay, performance, and failure-injection tests.
 - OpenTelemetry traces, structured logs, metrics, and CI quality gates.
+- Typed adapter contract with deterministic canonical event IDs.
+- Idempotent raw-record capture, duplicate suppression, and dead-letter routing.
 
 ## Architecture
 
@@ -119,9 +122,9 @@ docs/                    Architecture, ADRs, API, security, and operations
 
 ## Delivery Roadmap
 
-- Phase 0 — GitHub portfolio standard, documentation, contribution workflow, and project evidence structure.
-- Phase 1 — Docker platform foundation, service scaffolding, health checks, schemas, and Kafka topics.
-- Phase 2 — Source adapters, raw payload storage, normalization, deduplication, retries, and replay fixtures.
+- Phase 0 — GitHub portfolio standard, documentation, contribution workflow, and project evidence structure. **Complete.**
+- Phase 1 — Docker platform foundation, service scaffolding, health checks, schemas, and Kafka topics. **Complete and runtime-verified.**
+- Phase 2 — Source adapters, raw payload storage, normalization, deduplication, retries, and replay fixtures. **In progress.**
 - Phase 3 — NLP extraction, anomaly detection, forecasting baselines, and model evaluation.
 - Phase 4 — Correlation, Neo4j graph intelligence, deterministic risk scoring, and auditability.
 - Phase 5 — Hybrid RAG, evidence packaging, provider-neutral LLM reasoning, and citation validation.
@@ -135,4 +138,3 @@ Each completed phase will include an acceptance checklist, architecture decision
 ## Scope Boundaries
 
 The first release does not include wildfire intelligence, disease detection, economic crises, multi-agent coordination, full digital-twin simulation, Kubernetes, autonomous decision-making, or advanced deep-learning forecasting.
-

@@ -1,0 +1,18 @@
+{
+  "records": [
+    {
+      "source_id": "fixture-reports-nepal",
+      "record_id": "bulletin-sindhupalchok-2026-08-10T11:30:00Z",
+      "observed_at": "2026-08-10T11:30:00Z",
+      "payload": {
+        "text": "Officials report flooding and road disruption near Melamchi in Sindhupalchok after intense rainfall.",
+        "latitude": 27.95,
+        "longitude": 85.68,
+        "district": "Sindhupalchok",
+        "place_name": "Melamchi",
+        "source_confidence": 0.88
+      }
+    }
+  ]
+}
+

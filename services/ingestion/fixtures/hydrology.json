@@ -1,0 +1,20 @@
+{
+  "records": [
+    {
+      "source_id": "fixture-hydrology-nepal",
+      "record_id": "river-melamchi-2026-08-10T10:15:00Z",
+      "observed_at": "2026-08-10T10:15:00Z",
+      "payload": {
+        "river": "Melamchi",
+        "river_level_m": 7.8,
+        "flood_threshold_m": 6.5,
+        "discharge_m3s": 820.0,
+        "latitude": 27.95,
+        "longitude": 85.68,
+        "district": "Sindhupalchok",
+        "source_confidence": 0.97
+      }
+    }
+  ]
+}
+
