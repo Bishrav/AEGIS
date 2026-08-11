@@ -1,0 +1,43 @@
+version: 1
+namespace: aegis
+topics:
+  - name: raw.weather
+    purpose: Raw weather observations and forecasts.
+    key: source_record_id
+  - name: raw.hydrology
+    purpose: Raw river level and discharge measurements.
+    key: source_record_id
+  - name: raw.reports
+    purpose: Raw public reports, bulletins, and news documents.
+    key: source_record_id
+  - name: raw.infrastructure
+    purpose: Raw road closures, landslides, and infrastructure disruption reports.
+    key: source_record_id
+  - name: normalized.events
+    purpose: Versioned canonical events.
+    key: event_id
+  - name: ai.nlp.completed
+    purpose: NLP extraction results linked to canonical events.
+    key: event_id
+  - name: ai.anomaly.completed
+    purpose: Anomaly scores linked to measurements and events.
+    key: event_id
+  - name: ai.forecast.completed
+    purpose: Forecast outputs linked to a location and model version.
+    key: forecast_id
+  - name: correlation.candidates
+    purpose: Candidate event relationships before incident projection.
+    key: correlation_id
+  - name: incidents.updated
+    purpose: Correlated flood incident updates.
+    key: incident_id
+  - name: risk.updated
+    purpose: Versioned risk score updates.
+    key: incident_id
+  - name: alerts.created
+    purpose: Analyst-facing alert creation events.
+    key: alert_id
+  - name: audit.events
+    purpose: Immutable audit records for decisions and state changes.
+    key: audit_id
+
