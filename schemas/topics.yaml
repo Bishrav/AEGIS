@@ -40,4 +40,6 @@ topics:
   - name: audit.events
     purpose: Immutable audit records for decisions and state changes.
     key: audit_id
-
+  - name: deadletter.ingestion
+    purpose: Ingestion records that failed normalization or publication.
+    key: deduplication_key

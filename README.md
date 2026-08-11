@@ -69,6 +69,8 @@ flowchart LR
 - OpenTelemetry traces, structured logs, metrics, and CI quality gates.
 - Typed adapter contract with deterministic canonical event IDs.
 - Idempotent raw-record capture, duplicate suppression, and dead-letter routing.
+- MinIO raw-payload persistence and Kafka normalized-event publication.
+- Runnable replay API for the four MVP signal categories.
 
 ## Architecture
 
@@ -124,7 +126,7 @@ docs/                    Architecture, ADRs, API, security, and operations
 
 - Phase 0 — GitHub portfolio standard, documentation, contribution workflow, and project evidence structure. **Complete.**
 - Phase 1 — Docker platform foundation, service scaffolding, health checks, schemas, and Kafka topics. **Complete and runtime-verified.**
-- Phase 2 — Source adapters, raw payload storage, normalization, deduplication, retries, and replay fixtures. **In progress.**
+- Phase 2 — Source adapters, raw payload storage, normalization, deduplication, retries, and replay fixtures. **In progress — external storage and Kafka publishing implemented.**
 - Phase 3 — NLP extraction, anomaly detection, forecasting baselines, and model evaluation.
 - Phase 4 — Correlation, Neo4j graph intelligence, deterministic risk scoring, and auditability.
 - Phase 5 — Hybrid RAG, evidence packaging, provider-neutral LLM reasoning, and citation validation.

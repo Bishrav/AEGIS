@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Iterable
+from dataclasses import replace
 
 from .models import CanonicalEvent, RawRecord
 from .normalize import deduplication_key
@@ -16,6 +17,9 @@ class InMemoryRawPayloadStore:
             return False
         self.records[key] = record
         return True
+
+    def object_uri(self, record: RawRecord) -> str:
+        return f"memory://raw/{record.source_id}/{record.record_id}.json"
 
 
 class InMemoryEventPublisher:
@@ -41,9 +45,11 @@ def ingest_records(
         if not raw_store.put_if_absent(record):
             continue
         try:
-            publisher.publish(normalizer.normalize(record))
+            event = normalizer.normalize(record)
+            if hasattr(raw_store, "object_uri"):
+                event = replace(event, raw_object_uri=raw_store.object_uri(record))
+            publisher.publish(event)
             published += 1
         except (KeyError, TypeError, ValueError) as exc:
             publisher.dead_letter(record, str(exc))
     return published
-

@@ -52,7 +52,15 @@ class IngestionTests(unittest.TestCase):
         self.assertEqual(len(publisher.events), 0)
         self.assertEqual(len(publisher.dead_letters), 1)
 
+    def test_published_event_contains_raw_object_uri(self):
+        record = next(JsonReplayAdapter("weather", FIXTURES / "weather.json").read())
+        publisher = InMemoryEventPublisher()
+        ingest_records([record], InMemoryRawPayloadStore(), publisher, EventNormalizer())
+        self.assertEqual(
+            publisher.events[0].raw_object_uri,
+            "memory://raw/fixture-weather-nepal/weather-sindhupalchok-2026-08-10T09:00:00Z.json",
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
-
