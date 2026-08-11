@@ -17,6 +17,8 @@ The initial replay adapters use frozen JSON fixtures but follow the same contrac
 
 The runnable service persists raw records to MinIO and publishes normalized events to `normalized.events`. Malformed records are published to `deadletter.ingestion`.
 
+Open-Meteo weather can be pulled for the default Sindhupalchok coordinates with `POST /pull/weather`. The provider strategy and deferred live-source decisions are recorded in [`docs/architecture/adr/0002-live-source-provider-strategy.md`](../../docs/architecture/adr/0002-live-source-provider-strategy.md).
+
 Replay a fixture after the Docker stack is running:
 
 ```powershell

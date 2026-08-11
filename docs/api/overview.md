@@ -17,6 +17,7 @@ The API is introduced incrementally with each service milestone. All endpoints a
 - `GET /api/v1/anomalies`
 - `GET /api/v1/sources`
 - `GET /api/v1/models`
+- `GET /api/v1/sources/health`
 
 ## Planned write endpoints
 
@@ -28,5 +29,14 @@ The API is introduced incrementally with each service milestone. All endpoints a
 - `PATCH /api/v1/risk-policies/{id}`
 - `POST /api/v1/models/{id}/activate`
 
-The published API contract will be OpenAPI-generated and tested with contract tests before the endpoint is marked complete.
+## Current ingestion service endpoints
 
+The Phase 2 service currently exposes these unversioned local endpoints until the API gateway is introduced:
+
+- `GET /health`
+- `GET /ready`
+- `GET /sources/health`
+- `POST /replay/{source_type}`
+- `POST /pull/weather`
+
+The published API contract will be OpenAPI-generated and tested with contract tests before the endpoint is marked complete.
