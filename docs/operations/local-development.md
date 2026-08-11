@@ -29,6 +29,7 @@ The one-shot `redpanda-init` container provisions the topics declared in `schema
 | Grafana | http://localhost:3000 |
 | Platform health | http://localhost:8001/health |
 | Ingestion API | http://localhost:8002/health |
+| Source health | http://localhost:8002/sources/health |
 
 Credentials are development-only values from `.env.example`; never reuse them outside local development.
 
