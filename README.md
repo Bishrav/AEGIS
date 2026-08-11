@@ -13,6 +13,7 @@ Autonomous Event & Global Intelligence System — Nepal flood-risk intelligence 
 | API overview | [`docs/api/overview.md`](docs/api/overview.md) |
 | Delivery roadmap | [`docs/roadmap.md`](docs/roadmap.md) |
 | Operations runbook | [`docs/operations/local-development.md`](docs/operations/local-development.md) |
+| Railway deployment | [`docs/operations/railway.md`](docs/operations/railway.md) |
 
 ## What AEGIS Does
 
@@ -67,6 +68,7 @@ flowchart LR
 - PostgreSQL, Redis, Neo4j, MinIO, Kafka, Prometheus, and Grafana.
 - Unit, contract, integration, replay, performance, and failure-injection tests.
 - OpenTelemetry traces, structured logs, metrics, and CI quality gates.
+- Railway-ready isolated ingestion deployment with Dockerfile, healthcheck, and config-as-code.
 - Typed adapter contract with deterministic canonical event IDs.
 - Idempotent raw-record capture, duplicate suppression, and dead-letter routing.
 - MinIO raw-payload persistence and Kafka normalized-event publication.
@@ -141,6 +143,8 @@ docs/                    Architecture, ADRs, API, security, and operations
 Each completed phase will include an acceptance checklist, architecture decision records, test evidence, benchmark results where applicable, and a reproducible demonstration. The README will only claim completed features after they are verified in CI or through documented local evidence.
 
 Phase 2 evidence is summarized in [`docs/phase-reports/phase-2.md`](docs/phase-reports/phase-2.md).
+
+Railway deployment instructions are documented in [`docs/operations/railway.md`](docs/operations/railway.md). The repository is deployment-ready; the public service is not claimed as deployed until the Railway project and dependency bindings are configured.
 
 ## Scope Boundaries
 

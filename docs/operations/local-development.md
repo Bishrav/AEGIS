@@ -33,6 +33,8 @@ The one-shot `redpanda-init` container provisions the topics declared in `schema
 
 Credentials are development-only values from `.env.example`; never reuse them outside local development.
 
+For the public deployment path, see [`railway.md`](railway.md).
+
 ## Stop infrastructure
 
 ```powershell
