@@ -25,6 +25,7 @@ docker compose ps
 | Neo4j Browser | http://localhost:7474 |
 | Prometheus | http://localhost:9090 |
 | Grafana | http://localhost:3000 |
+| Platform health | http://localhost:8001/health |
 
 Credentials are development-only values from `.env.example`; never reuse them outside local development.
 
@@ -35,4 +36,3 @@ docker compose down
 ```
 
 Use `docker compose down -v` only when intentionally discarding local service data.
-
