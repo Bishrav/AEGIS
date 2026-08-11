@@ -5,7 +5,7 @@ from aegis_ingestion.adapters import JsonReplayAdapter
 from aegis_ingestion.models import RawRecord
 from aegis_ingestion.normalize import EventNormalizer
 from aegis_ingestion.ports import InMemoryEventPublisher, InMemoryRawPayloadStore, ingest_records
-from aegis_ingestion.reliability import RetryPolicy, SourceHealthRegistry
+from aegis_ingestion.reliability import RetryingPublisher, RetryPolicy, SourceHealthRegistry
 
 
 FIXTURES = Path(__file__).parents[1] / "fixtures"
@@ -90,6 +90,36 @@ class IngestionTests(unittest.TestCase):
         self.assertEqual(snapshot[0]["source_id"], "fixture-weather-nepal")
         self.assertEqual(snapshot[0]["status"], "healthy")
         self.assertEqual(snapshot[0]["success_count"], 1)
+
+    def test_publisher_retries_transient_publish_failure(self):
+        class FlakyPublisher:
+            def __init__(self):
+                self.attempts = 0
+
+            def publish(self, _event):
+                self.attempts += 1
+                if self.attempts < 3:
+                    raise RuntimeError("broker unavailable")
+
+            def dead_letter(self, _record, _reason):
+                pass
+
+            def close(self):
+                pass
+
+        publisher = FlakyPublisher()
+        RetryingPublisher(publisher, RetryPolicy(max_attempts=3, initial_delay_seconds=0)).publish(object())
+        self.assertEqual(publisher.attempts, 3)
+
+    def test_permanent_publish_failure_is_dead_lettered(self):
+        class FailingPublisher(InMemoryEventPublisher):
+            def publish(self, _event):
+                raise RuntimeError("permanent broker failure")
+
+        record = next(JsonReplayAdapter("weather", FIXTURES / "weather.json").read())
+        publisher = FailingPublisher()
+        ingest_records([record], InMemoryRawPayloadStore(), publisher, EventNormalizer())
+        self.assertEqual(len(publisher.dead_letters), 1)
 
 
 if __name__ == "__main__":

@@ -56,7 +56,7 @@ def ingest_records(
             published += 1
             if health_registry is not None:
                 health_registry.success(record.source_id)
-        except (KeyError, TypeError, ValueError) as exc:
+        except Exception as exc:
             publisher.dead_letter(record, str(exc))
             if health_registry is not None:
                 health_registry.failure(record.source_id, exc)

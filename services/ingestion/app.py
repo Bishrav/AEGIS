@@ -12,7 +12,7 @@ from aegis_ingestion.live_adapters import OpenMeteoWeatherAdapter
 from aegis_ingestion.bipad_adapters import BipadIncidentAdapter, BipadRiverAdapter
 from aegis_ingestion.normalize import EventNormalizer
 from aegis_ingestion.ports import ingest_records
-from aegis_ingestion.reliability import RetryPolicy, SourceHealthRegistry
+from aegis_ingestion.reliability import RetryingPublisher, RetryPolicy, SourceHealthRegistry
 
 app = FastAPI(title="AEGIS Ingestion Service", version="0.1.0")
 FIXTURES = Path(__file__).parent / "fixtures"
@@ -30,7 +30,10 @@ def _dependencies():
                 bucket=os.getenv("S3_BUCKET", "aegis-raw"),
             )
         ),
-        KafkaEventPublisher(os.getenv("KAFKA_BOOTSTRAP_SERVERS", "redpanda:9092")),
+        RetryingPublisher(
+            KafkaEventPublisher(os.getenv("KAFKA_BOOTSTRAP_SERVERS", "redpanda:9092")),
+            retry_policy,
+        ),
         RedisIdempotencyStore(os.getenv("REDIS_URL", "redis://redis:6379/0")),
     )
 

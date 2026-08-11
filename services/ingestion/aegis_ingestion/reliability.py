@@ -59,3 +59,17 @@ class SourceHealthRegistry:
     def snapshot(self) -> list[dict[str, object]]:
         return [health.__dict__.copy() for health in self.sources.values()]
 
+
+class RetryingPublisher:
+    def __init__(self, publisher, policy: RetryPolicy) -> None:
+        self.publisher = publisher
+        self.policy = policy
+
+    def publish(self, event) -> None:
+        self.policy.run(lambda: self.publisher.publish(event))
+
+    def dead_letter(self, record, reason: str) -> None:
+        self.policy.run(lambda: self.publisher.dead_letter(record, reason))
+
+    def close(self) -> None:
+        self.publisher.close()
