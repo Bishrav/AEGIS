@@ -14,11 +14,12 @@ Every phase ends with working evidence, not only source code. A phase is complet
 - Health/readiness endpoints and service scaffolding.
 - Versioned event schemas and Kafka topic catalog.
 
-## Phase 2 — Ingestion and normalization
+## Phase 2 — Ingestion and normalization — Complete
 
 - At least three real source adapters.
 - Raw payload persistence, retries, idempotency, deduplication, and dead-letter handling.
 - Historical replay fixtures.
+- Live Open-Meteo and BIPAD adapters, retries, Redis idempotency, source health, and CI integration contract.
 
 ## Phase 3 — Flood intelligence
 
@@ -46,4 +47,3 @@ Every phase ends with working evidence, not only source code. A phase is complet
 
 - Integration, replay, E2E, load, and failure-injection tests.
 - Observability dashboards, CI gates, deployment, screenshots, benchmarks, and recruiter demo.
-

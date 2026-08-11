@@ -2,7 +2,7 @@
 
 Autonomous Event & Global Intelligence System — Nepal flood-risk intelligence MVP.
 
-> Portfolio status: Phase 2 — ingestion and normalization in progress. Phase 1 platform foundation is complete and runtime-verified; the current work adds replayable weather, hydrology, road-disruption, and public-report ingestion.
+> Portfolio status: Phase 2 — ingestion and normalization complete. The platform now ingests replayed and live weather, hydrology, road-disruption, and public-report signals with persistence, retries, idempotency, health reporting, and CI verification.
 
 ## Project Links
 
@@ -129,7 +129,7 @@ docs/                    Architecture, ADRs, API, security, and operations
 
 - Phase 0 — GitHub portfolio standard, documentation, contribution workflow, and project evidence structure. **Complete.**
 - Phase 1 — Docker platform foundation, service scaffolding, health checks, schemas, and Kafka topics. **Complete and runtime-verified.**
-- Phase 2 — Source adapters, raw payload storage, normalization, deduplication, retries, and replay fixtures. **In progress — Open-Meteo and BIPAD live adapters now verified; integration hardening remains.**
+- Phase 2 — Source adapters, raw payload storage, normalization, deduplication, retries, and replay fixtures. **Complete and integration-verified.**
 - Phase 3 — NLP extraction, anomaly detection, forecasting baselines, and model evaluation.
 - Phase 4 — Correlation, Neo4j graph intelligence, deterministic risk scoring, and auditability.
 - Phase 5 — Hybrid RAG, evidence packaging, provider-neutral LLM reasoning, and citation validation.
@@ -139,6 +139,8 @@ docs/                    Architecture, ADRs, API, security, and operations
 ## Portfolio Evidence
 
 Each completed phase will include an acceptance checklist, architecture decision records, test evidence, benchmark results where applicable, and a reproducible demonstration. The README will only claim completed features after they are verified in CI or through documented local evidence.
+
+Phase 2 evidence is summarized in [`docs/phase-reports/phase-2.md`](docs/phase-reports/phase-2.md).
 
 ## Scope Boundaries
 

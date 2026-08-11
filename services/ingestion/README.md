@@ -36,3 +36,5 @@ Invoke-WebRequest -Method Post http://localhost:8002/replay/report
 $env:PYTHONPATH = "services/ingestion"
 python -m unittest discover -s services/ingestion/tests -v
 ```
+
+GitHub Actions runs the same ingestion suite and Python compilation checks on every push and pull request. Docker Compose configuration is validated as a separate CI job.
