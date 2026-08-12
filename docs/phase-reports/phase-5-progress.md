@@ -17,4 +17,4 @@
 
 ## Final status
 
-Phase 5 implementation is complete. The remote Supabase migration is pending only because the authenticated Supabase MCP server is not available in the active Codex session. Full acceptance details are in [`phase-5.md`](phase-5.md).
+Phase 5 is complete and Supabase-verified. Full acceptance details are in [`phase-5.md`](phase-5.md).

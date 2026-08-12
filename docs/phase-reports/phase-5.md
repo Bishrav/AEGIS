@@ -1,6 +1,6 @@
 # Phase 5 Completion Report
 
-Status: **Code complete; remote Supabase migration pending MCP reconnection.**
+Status: **Complete and Supabase-verified.**
 
 ## Delivered
 
@@ -11,6 +11,7 @@ Status: **Code complete; remote Supabase migration pending MCP reconnection.**
 - Incident evidence search API.
 - Citation-enforcing reasoning API with mock and OpenAI-compatible providers.
 - Docker Compose services and health checks for evidence and reasoning.
+- Supabase RLS enabled on both evidence tables with backend-only access.
 
 ## Local verification
 
@@ -23,6 +24,10 @@ The Phase 5 suites pass locally:
 
 The evaluation fixture reports Recall@5 = `1.00` for the labelled flood retrieval cases. This is a small acceptance fixture, not a production-quality benchmark.
 
-## External follow-up
+## Supabase verification
 
-Apply [`infra/supabase/migrations/001_rag_evidence.sql`](../../infra/supabase/migrations/001_rag_evidence.sql) to the development Supabase project after the Supabase MCP connection is available in the active Codex session. Until then, the evidence service defaults to its deterministic in-memory store.
+- Migration `aegis_phase5_rag_evidence` applied successfully.
+- Migration `aegis_phase5_evidence_rls` applied successfully.
+- `public.aegis_documents` has RLS enabled.
+- `public.aegis_evidence_chunks` has RLS enabled.
+- No public or anonymous policies were created; access is routed through backend services.
