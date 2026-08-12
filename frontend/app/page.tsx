@@ -22,6 +22,9 @@ export default function Dashboard() {
       .then((response) => response.ok ? response.json() : null)
       .then(setUser)
       .catch(() => undefined);
+    const viewAll = Array.from(document.querySelectorAll("button")).find((button) => button.textContent?.includes("View all incidents"));
+    viewAll?.addEventListener("click", () => { window.location.href = "/incidents"; });
+    return () => viewAll?.removeEventListener("click", () => { window.location.href = "/incidents"; });
   }, []);
 
   async function login(event: React.FormEvent) {

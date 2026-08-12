@@ -55,6 +55,15 @@ python -m unittest tests.phase7.test_replay_acceptance -v
   - `/models` — model metrics, registry, reproducibility, and risk governance.
 - Frontend production build and Docker startup both pass after the UI changes.
 
+## Seventh milestone — working dashboard actions
+
+- Added an authenticated gateway route for evidence document ingestion.
+- Evidence search now displays live results, the ingest modal indexes a document through the backend, and source citations open a real URL or search fallback.
+- Overview incident navigation now opens the full incident queue.
+- Knowledge graph traversal now filters impact paths and supports Reset view.
+- Model Evaluation now exports JSON metrics and downloads a Markdown evaluation report.
+- Smoke verification passed: analyst login `200`, document ingestion `200`, and `/incidents`, `/evidence`, `/graph`, and `/models` each returned `200` with rendered HTML.
+
 ## Fifth milestone — reproducible load evidence
 
 - Added [`benchmarks/phase7_load.py`](../../benchmarks/phase7_load.py), a standard-library benchmark for API health, incident listing, and evidence search.

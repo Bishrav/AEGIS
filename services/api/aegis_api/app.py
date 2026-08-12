@@ -102,6 +102,12 @@ def incident_evidence(incident_id: str, request: Request, query: str, top_k: int
     return _get_json(os.getenv("EVIDENCE_URL", "http://evidence:8000"), f"/incidents/{incident_id}/evidence", {"query": query, "top_k": str(top_k)})
 
 
+@app.post("/api/v1/evidence/documents")
+def ingest_evidence_document(payload: dict, request: Request) -> dict:
+    require(request, Permission.VIEW_EVIDENCE)
+    return _request_json(os.getenv("EVIDENCE_URL", "http://evidence:8000"), "/documents", method="POST", body=payload)
+
+
 @app.get("/api/v1/events/stream")
 def event_stream(request: Request):
     require(request, Permission.VIEW_INCIDENTS)
