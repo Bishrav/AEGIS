@@ -1,0 +1,17 @@
+{"text":"Heavy rainfall caused the river to overflow near Melamchi.","label":"FLOOD"}
+{"text":"Flood water entered homes after the storm in Sindhupalchok.","label":"FLOOD"}
+{"text":"The swollen river inundated farmland and damaged a bridge.","label":"FLOOD"}
+{"text":"Officials issued a flood warning for communities beside the river.","label":"FLOOD"}
+{"text":"Rainfall reached 128 millimeters in six hours.","label":"HEAVY_RAIN"}
+{"text":"Intense rain is expected across the district overnight.","label":"HEAVY_RAIN"}
+{"text":"A severe monsoon downpour triggered a rainfall alert.","label":"HEAVY_RAIN"}
+{"text":"The weather station recorded unusually heavy precipitation.","label":"HEAVY_RAIN"}
+{"text":"A landslide blocked the Araniko Highway near the bridge.","label":"ROAD_CLOSURE"}
+{"text":"The road remains closed because debris covers the highway.","label":"ROAD_CLOSURE"}
+{"text":"Traffic is stopped after a landslide blocked the road.","label":"ROAD_CLOSURE"}
+{"text":"Officials closed the route for public safety.","label":"ROAD_CLOSURE"}
+{"text":"The district office published a routine administrative notice.","label":"NORMAL"}
+{"text":"A community meeting is scheduled for next Tuesday.","label":"NORMAL"}
+{"text":"The school announced a change to its timetable.","label":"NORMAL"}
+{"text":"No weather disruption was reported in the area.","label":"NORMAL"}
+

@@ -2,7 +2,7 @@
 
 Autonomous Event & Global Intelligence System — Nepal flood-risk intelligence MVP.
 
-> Portfolio status: Phase 2 — ingestion and normalization complete. The platform now ingests replayed and live weather, hydrology, road-disruption, and public-report signals with persistence, retries, idempotency, health reporting, and CI verification.
+> Portfolio status: Phase 3 — flood intelligence in progress. Phase 2 ingestion is complete; the current work adds reproducible NLP, anomaly detection, forecasting, and model evaluation baselines.
 
 ## Project Links
 
@@ -76,6 +76,8 @@ flowchart LR
 - Retry with bounded exponential backoff and source-health reporting.
 - Redis-backed idempotency claims for restart-safe ingestion.
 - Live Open-Meteo weather and BIPAD hydrology/incident adapters.
+- Reproducible TF-IDF + Logistic Regression flood-report classification baseline.
+- Initial NLP baseline metrics are recorded and evaluated in CI; current macro F1 is 0.667 on the starter dataset.
 
 ## Architecture
 
@@ -132,7 +134,7 @@ docs/                    Architecture, ADRs, API, security, and operations
 - Phase 0 — GitHub portfolio standard, documentation, contribution workflow, and project evidence structure. **Complete.**
 - Phase 1 — Docker platform foundation, service scaffolding, health checks, schemas, and Kafka topics. **Complete and runtime-verified.**
 - Phase 2 — Source adapters, raw payload storage, normalization, deduplication, retries, and replay fixtures. **Complete and integration-verified.**
-- Phase 3 — NLP extraction, anomaly detection, forecasting baselines, and model evaluation.
+- Phase 3 — NLP extraction, anomaly detection, forecasting baselines, and model evaluation. **In progress.**
 - Phase 4 — Correlation, Neo4j graph intelligence, deterministic risk scoring, and auditability.
 - Phase 5 — Hybrid RAG, evidence packaging, provider-neutral LLM reasoning, and citation validation.
 - Phase 6 — JWT/RBAC, REST API, analyst workflows, Next.js dashboard, and live updates.
@@ -143,6 +145,8 @@ docs/                    Architecture, ADRs, API, security, and operations
 Each completed phase will include an acceptance checklist, architecture decision records, test evidence, benchmark results where applicable, and a reproducible demonstration. The README will only claim completed features after they are verified in CI or through documented local evidence.
 
 Phase 2 evidence is summarized in [`docs/phase-reports/phase-2.md`](docs/phase-reports/phase-2.md).
+
+Phase 3 currently includes the reproducible NLP baseline; anomaly detection, forecasting, NER, and expanded evaluation are next.
 
 Railway deployment instructions are documented in [`docs/operations/railway.md`](docs/operations/railway.md). The repository is deployment-ready; the public service is not claimed as deployed until the Railway project and dependency bindings are configured.
 
