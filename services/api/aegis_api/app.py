@@ -6,10 +6,10 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request, Response
 
 from aegis_auth.rbac import Permission, UserContext, authorize
-from aegis_auth.app import COOKIE_NAME, decode_token
+from aegis_auth.app import COOKIE_NAME, authenticate_credentials, decode_token, issue_token
 
 app = FastAPI(title="AEGIS API Gateway", version="0.1.0")
 
@@ -50,6 +50,20 @@ def health() -> dict[str, str]:
 def me(request: Request) -> dict[str, str]:
     user = current_user(request)
     return {"user_id": user.user_id, "role": user.role.value}
+
+
+@app.post("/api/v1/auth/login")
+def login(payload: dict, response: Response) -> dict[str, str]:
+    user = authenticate_credentials(str(payload.get("username", "")), str(payload.get("password", "")))
+    token = issue_token(user, os.getenv("AEGIS_JWT_SECRET", "local-development-only-change-me"))
+    response.set_cookie(COOKIE_NAME, token, httponly=True, secure=os.getenv("ENVIRONMENT") == "production", samesite="lax", max_age=1800)
+    return {"user_id": user.user_id, "role": user.role.value}
+
+
+@app.post("/api/v1/auth/logout")
+def logout(response: Response) -> dict[str, str]:
+    response.delete_cookie(COOKIE_NAME)
+    return {"status": "logged_out"}
 
 
 @app.get("/api/v1/incidents/{incident_id}")

@@ -49,6 +49,16 @@ services:
       timeout: 3s
       retries: 10
 
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "3001:3001"
+
   ingestion:
     build: ./services/ingestion
     depends_on:
