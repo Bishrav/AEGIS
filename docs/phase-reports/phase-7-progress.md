@@ -54,3 +54,9 @@ python -m unittest tests.phase7.test_replay_acceptance -v
   - `/graph` — infrastructure dependency graph and traversal paths.
   - `/models` — model metrics, registry, reproducibility, and risk governance.
 - Frontend production build and Docker startup both pass after the UI changes.
+
+## Fifth milestone — reproducible load evidence
+
+- Added [`benchmarks/phase7_load.py`](../../benchmarks/phase7_load.py), a standard-library benchmark for API health, incident listing, and evidence search.
+- It reports success/error counts, p50 latency, p95 latency, and throughput, and writes a machine-specific JSON artifact under `artifacts/`.
+- The benchmark is intentionally parameterized by request count and worker count so results can be compared across local hardware or deployment targets.
