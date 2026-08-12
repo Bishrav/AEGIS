@@ -8,6 +8,12 @@ class IncidentRepository(Protocol):
 
     def get(self, incident_id: str) -> dict[str, Any] | None: ...
 
+    def list(self) -> list[dict[str, Any]]: ...
+
+    def update_status(self, incident_id: str, status: str) -> dict[str, Any] | None: ...
+
+    def add_note(self, incident_id: str, note: str, author: str) -> dict[str, Any] | None: ...
+
 
 class InMemoryIncidentRepository:
     def __init__(self) -> None:
@@ -26,10 +32,27 @@ class InMemoryIncidentRepository:
                 "policy_version": risk.policy_version,
             },
             "audit": audit,
+            "status": "OPEN",
+            "notes": [],
         }
 
     def get(self, incident_id: str) -> dict[str, Any] | None:
         return self.records.get(incident_id)
+
+    def list(self) -> list[dict[str, Any]]:
+        return list(self.records.values())
+
+    def update_status(self, incident_id: str, status: str) -> dict[str, Any] | None:
+        record = self.records.get(incident_id)
+        if record:
+            record["status"] = status
+        return record
+
+    def add_note(self, incident_id: str, note: str, author: str) -> dict[str, Any] | None:
+        record = self.records.get(incident_id)
+        if record:
+            record.setdefault("notes", []).append({"note": note, "author": author})
+        return record
 
 
 class PostgresIncidentRepository:
@@ -74,5 +97,22 @@ class PostgresIncidentRepository:
     def get(self, incident_id: str) -> dict[str, Any] | None:
         with self.connection.cursor() as cursor:
             cursor.execute("SELECT payload FROM aegis_incidents WHERE incident_id = %s", (incident_id,))
+            row = cursor.fetchone()
+        return row[0] if row else None
+
+    def list(self) -> list[dict[str, Any]]:
+        with self.connection.cursor() as cursor:
+            cursor.execute("SELECT payload FROM aegis_incidents ORDER BY updated_at DESC")
+            return [row[0] for row in cursor.fetchall()]
+
+    def update_status(self, incident_id: str, status: str) -> dict[str, Any] | None:
+        with self.connection.cursor() as cursor:
+            cursor.execute("UPDATE aegis_incidents SET payload = jsonb_set(payload, '{status}', to_jsonb(%s::text)), updated_at = now() WHERE incident_id = %s RETURNING payload", (status, incident_id))
+            row = cursor.fetchone()
+        return row[0] if row else None
+
+    def add_note(self, incident_id: str, note: str, author: str) -> dict[str, Any] | None:
+        with self.connection.cursor() as cursor:
+            cursor.execute("UPDATE aegis_incidents SET payload = jsonb_set(payload, '{notes}', COALESCE(payload->'notes', '[]'::jsonb) || jsonb_build_object('note', %s::text, 'author', %s::text)), updated_at = now() WHERE incident_id = %s RETURNING payload", (note, author, incident_id))
             row = cursor.fetchone()
         return row[0] if row else None

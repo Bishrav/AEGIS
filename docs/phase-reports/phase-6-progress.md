@@ -14,10 +14,11 @@ Phase 6 delivers the secured application surface: JWT authentication, RBAC, cons
 - Authenticated API gateway exposing the dashboard-facing application surface on port 8000.
 - Next.js operations dashboard with responsive overview, incident queue, event stream, risk map, and sign-in flow.
 - Credentialed local CORS between the dashboard and API gateway.
+- Live incident listing through the authenticated gateway.
+- Analyst status mutation and note creation with RBAC enforcement.
 
 ## Next milestones
 
-- JWT authentication with HttpOnly-cookie transport.
-- API gateway and incident/evidence endpoints.
-- Analyst notes, acknowledgement, and status workflows.
-- Next.js dashboard foundation and live update channel.
+- Replace seeded detail-page content with live incident and evidence responses.
+- Add SSE/WebSocket live update channel.
+- Complete Phase 6 acceptance verification and portfolio evidence.

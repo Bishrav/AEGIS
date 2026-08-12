@@ -36,17 +36,25 @@ def require(request: Request, permission: Permission) -> UserContext:
     return user
 
 
-def _get_json(base_url: str, path: str, params: dict[str, str] | None = None) -> dict:
+def _request_json(base_url: str, path: str, method: str = "GET", params: dict[str, str] | None = None, body: dict | None = None) -> dict:
     query = ""
     if params:
         query = "?" + urllib.parse.urlencode(params)
     try:
-        with urllib.request.urlopen(f"{base_url.rstrip('/')}{path}{query}", timeout=10) as response:
+        request = urllib.request.Request(f"{base_url.rstrip('/')}{path}{query}", method=method)
+        if body is not None:
+            request.data = json.dumps(body).encode()
+            request.add_header("Content-Type", "application/json")
+        with urllib.request.urlopen(request, timeout=10) as response:
             return json.loads(response.read().decode())
     except urllib.error.HTTPError as exc:
         raise HTTPException(status_code=exc.code, detail="downstream service request failed") from exc
     except urllib.error.URLError as exc:
         raise HTTPException(status_code=503, detail="downstream service unavailable") from exc
+
+
+def _get_json(base_url: str, path: str, params: dict[str, str] | None = None) -> dict:
+    return _request_json(base_url, path, params=params)
 
 
 @app.get("/health")
@@ -80,7 +88,25 @@ def incident(incident_id: str, request: Request) -> dict:
     return _get_json(os.getenv("CORRELATION_URL", "http://correlation:8000"), f"/incidents/{incident_id}")
 
 
+@app.get("/api/v1/incidents")
+def incidents(request: Request) -> dict:
+    require(request, Permission.VIEW_INCIDENTS)
+    return _get_json(os.getenv("CORRELATION_URL", "http://correlation:8000"), "/incidents")
+
+
 @app.get("/api/v1/incidents/{incident_id}/evidence")
 def incident_evidence(incident_id: str, request: Request, query: str, top_k: int = 5) -> dict:
     require(request, Permission.VIEW_EVIDENCE)
     return _get_json(os.getenv("EVIDENCE_URL", "http://evidence:8000"), f"/incidents/{incident_id}/evidence", {"query": query, "top_k": str(top_k)})
+
+
+@app.patch("/api/v1/incidents/{incident_id}/status")
+def update_incident_status(incident_id: str, payload: dict, request: Request) -> dict:
+    require(request, Permission.EDIT_INCIDENTS)
+    return _request_json(os.getenv("CORRELATION_URL", "http://correlation:8000"), f"/incidents/{incident_id}/status", method="PATCH", body=payload)
+
+
+@app.post("/api/v1/incidents/{incident_id}/notes")
+def add_incident_note(incident_id: str, payload: dict, request: Request) -> dict:
+    require(request, Permission.EDIT_INCIDENTS)
+    return _request_json(os.getenv("CORRELATION_URL", "http://correlation:8000"), f"/incidents/{incident_id}/notes", method="POST", body=payload)
