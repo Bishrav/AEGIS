@@ -1,0 +1,72 @@
+services:
+  - type: web
+    name: aegis-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./services/api/Dockerfile
+    dockerContext: .
+    healthCheckPath: /ready
+    autoDeployTrigger: checksPass
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: COOKIE_SAMESITE
+        value: none
+      - key: AEGIS_JWT_SECRET
+        generateValue: true
+      - key: ALLOWED_ORIGINS
+        sync: false
+      - key: CORRELATION_URL
+        fromService:
+          type: pserv
+          name: aegis-correlation
+          property: hostport
+      - key: EVIDENCE_URL
+        fromService:
+          type: pserv
+          name: aegis-evidence
+          property: hostport
+      - key: REDIS_URL
+        fromService:
+          type: keyvalue
+          name: aegis-redis
+          property: connectionString
+
+  - type: pserv
+    name: aegis-correlation
+    runtime: docker
+    plan: starter
+    dockerfilePath: ./services/correlation/Dockerfile
+    dockerContext: .
+    envVars:
+      - key: POSTGRES_DSN
+        sync: false
+
+  - type: pserv
+    name: aegis-evidence
+    runtime: docker
+    plan: starter
+    dockerfilePath: ./services/evidence/Dockerfile
+    dockerContext: .
+    envVars:
+      - key: EVIDENCE_POSTGRES_DSN
+        sync: false
+
+  - type: keyvalue
+    name: aegis-redis
+    plan: free
+    ipAllowList:
+      - source: 0.0.0.0/0
+        description: Render private network clients
+
+  - type: web
+    name: aegis-frontend
+    runtime: docker
+    plan: free
+    dockerfilePath: ./frontend/Dockerfile
+    dockerContext: .
+    healthCheckPath: /
+    autoDeployTrigger: checksPass
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        sync: false

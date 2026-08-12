@@ -2,6 +2,8 @@
 
 AEGIS is Render-compatible, but its current gateway depends on private correlation and evidence services. The production topology must therefore deploy the gateway together with those private services, plus PostgreSQL and Redis-compatible Key Value. The frontend may be deployed to Vercel or Render as a separate web service.
 
+The repository includes [`render.yaml`](../../render.yaml) as the deployment contract. It uses Render Key Value and expects the Supabase/Postgres connection strings and final browser origins to be entered as protected dashboard values.
+
 ## Recommended first production slice
 
 | Service | Render type | Required configuration |
@@ -14,6 +16,8 @@ AEGIS is Render-compatible, but its current gateway depends on private correlati
 | `aegis-frontend` | Vercel or Web service | `NEXT_PUBLIC_API_URL=https://<api-domain>` |
 
 Render private services are not available on the Free plan. Do not expose correlation or evidence as public services just to avoid that restriction; use a paid private service plan or deploy the modular backend as a single production service later.
+
+The Blueprint intentionally uses `starter` for the two private services because Render does not offer Free plans for private services. Review the resulting monthly cost in Render before creating the Blueprint.
 
 ## Environment variables
 
