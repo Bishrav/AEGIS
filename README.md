@@ -2,7 +2,7 @@
 
 Autonomous Event & Global Intelligence System — Nepal flood-risk intelligence MVP.
 
-> Portfolio status: Phase 3 — flood intelligence complete. AEGIS now includes reproducible NLP, hybrid NER, anomaly detection, forecasting baselines, typed inference contracts, and CI verification.
+> Portfolio status: Phase 7 — production evidence in progress. AEGIS includes a secured operations dashboard, live incident workflow, evidence retrieval, and a repeatable end-to-end acceptance harness.
 
 ## Project Links
 
@@ -147,7 +147,7 @@ docs/                    Architecture, ADRs, API, security, and operations
 - Phase 4 — Correlation, Neo4j graph intelligence, deterministic risk scoring, and auditability. **Complete and integration-verified.**
 - Phase 5 — Hybrid RAG, evidence packaging, provider-neutral LLM reasoning, and citation validation. **Complete and Supabase-verified.**
 - Phase 6 — JWT/RBAC, REST API, analyst workflows, Next.js dashboard, and live updates. **Complete.**
-- Phase 7 — Full verification, load/failure testing, observability, deployment, screenshots, benchmarks, and recruiter demo.
+- Phase 7 — Full verification, load/failure testing, observability, deployment, screenshots, benchmarks, and recruiter demo. **In progress.**
 
 ## Portfolio Evidence
 
@@ -187,6 +187,8 @@ Dashboard routes:
 - `/observability` — Runtime telemetry
 
 Phase 6 is complete: live incident listing and detail pages, RBAC-protected status updates, analyst notes, Redis-backed SSE incident updates, evidence search, Docker verification, and authenticated end-to-end acceptance checks are documented in [`docs/phase-reports/phase-6-progress.md`](docs/phase-reports/phase-6-progress.md).
+
+Phase 7 progress is documented in [`docs/phase-reports/phase-7-progress.md`](docs/phase-reports/phase-7-progress.md). Its first milestone is a repeatable local end-to-end acceptance harness covering authentication, evidence, correlation, risk, analyst actions, and live updates.
 
 Railway deployment instructions are documented in [`docs/operations/railway.md`](docs/operations/railway.md). The repository is deployment-ready; the public service is not claimed as deployed until the Railway project and dependency bindings are configured.
 
