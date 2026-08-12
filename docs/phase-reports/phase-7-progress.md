@@ -43,3 +43,14 @@ python -m unittest tests.phase7.test_replay_acceptance -v
 - A transient broker failure is injected and verified to recover on the third retry without dead-lettering.
 - A permanent upstream timeout is verified to produce a degraded source-health record with an actionable error.
 - These checks are required by the Phase 7 CI job.
+
+## Fourth milestone — dashboard route UI verification
+
+- Replaced the overview page's hash-only navigation with real Next.js links.
+- Added the missing page-level visual system for incident tables, evidence cards, graph canvas and nodes, model registry rows, risk timelines, filters, analyst actions, and responsive layouts.
+- Rebuilt the production frontend container and verified all four routes return rendered HTML:
+  - `/incidents` — incident queue and workflow status.
+  - `/evidence` — hybrid retrieval search and evidence cards.
+  - `/graph` — infrastructure dependency graph and traversal paths.
+  - `/models` — model metrics, registry, reproducibility, and risk governance.
+- Frontend production build and Docker startup both pass after the UI changes.
