@@ -138,7 +138,7 @@ docs/                    Architecture, ADRs, API, security, and operations
 - Phase 1 — Docker platform foundation, service scaffolding, health checks, schemas, and Kafka topics. **Complete and runtime-verified.**
 - Phase 2 — Source adapters, raw payload storage, normalization, deduplication, retries, and replay fixtures. **Complete and integration-verified.**
 - Phase 3 — NLP extraction, anomaly detection, forecasting baselines, and model evaluation. **Complete and CI-verified.**
-- Phase 4 — Correlation, Neo4j graph intelligence, deterministic risk scoring, and auditability.
+- Phase 4 — Correlation, Neo4j graph intelligence, deterministic risk scoring, and auditability. **In progress.**
 - Phase 5 — Hybrid RAG, evidence packaging, provider-neutral LLM reasoning, and citation validation.
 - Phase 6 — JWT/RBAC, REST API, analyst workflows, Next.js dashboard, and live updates.
 - Phase 7 — Full verification, load/failure testing, observability, deployment, screenshots, benchmarks, and recruiter demo.
