@@ -138,7 +138,7 @@ docs/                    Architecture, ADRs, API, security, and operations
 - Phase 1 — Docker platform foundation, service scaffolding, health checks, schemas, and Kafka topics. **Complete and runtime-verified.**
 - Phase 2 — Source adapters, raw payload storage, normalization, deduplication, retries, and replay fixtures. **Complete and integration-verified.**
 - Phase 3 — NLP extraction, anomaly detection, forecasting baselines, and model evaluation. **Complete and CI-verified.**
-- Phase 4 — Correlation, Neo4j graph intelligence, deterministic risk scoring, and auditability. **In progress.**
+- Phase 4 — Correlation, Neo4j graph intelligence, deterministic risk scoring, and auditability. **Complete and integration-verified.**
 - Phase 5 — Hybrid RAG, evidence packaging, provider-neutral LLM reasoning, and citation validation.
 - Phase 6 — JWT/RBAC, REST API, analyst workflows, Next.js dashboard, and live updates.
 - Phase 7 — Full verification, load/failure testing, observability, deployment, screenshots, benchmarks, and recruiter demo.
@@ -153,7 +153,7 @@ Phase 3 includes the reproducible NLP baseline, hybrid NER, anomaly ensemble, fo
 
 Phase 3 evidence is summarized in [`docs/phase-reports/phase-3.md`](docs/phase-reports/phase-3.md).
 
-Phase 4 progress is tracked in [`docs/phase-reports/phase-4-progress.md`](docs/phase-reports/phase-4-progress.md), including the deterministic replay pipeline, graph projection boundary, and immutable risk audit records.
+Phase 4 completion evidence is documented in [`docs/phase-reports/phase-4-progress.md`](docs/phase-reports/phase-4-progress.md), including the four-source replay, managed Kafka worker, Postgres persistence path, Neo4j integration test, and immutable risk audit records.
 
 Railway deployment instructions are documented in [`docs/operations/railway.md`](docs/operations/railway.md). The repository is deployment-ready; the public service is not claimed as deployed until the Railway project and dependency bindings are configured.
 
