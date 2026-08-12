@@ -21,11 +21,12 @@ Every phase ends with working evidence, not only source code. A phase is complet
 - Historical replay fixtures.
 - Live Open-Meteo and BIPAD adapters, retries, Redis idempotency, source health, and CI integration contract.
 
-## Phase 3 — Flood intelligence
+## Phase 3 — Flood intelligence — Complete
 
 - NLP extraction and entity normalization.
 - Rainfall/river anomaly detection.
 - Forecasting baselines and evaluation reports.
+- Typed inference schemas, hybrid NER, anomaly ensemble, and CI verification.
 
 ## Phase 4 — Correlation, graph, and risk
 

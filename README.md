@@ -2,7 +2,7 @@
 
 Autonomous Event & Global Intelligence System — Nepal flood-risk intelligence MVP.
 
-> Portfolio status: Phase 3 — flood intelligence in progress. Phase 2 ingestion is complete; the current work adds reproducible NLP, anomaly detection, forecasting, and model evaluation baselines.
+> Portfolio status: Phase 3 — flood intelligence complete. AEGIS now includes reproducible NLP, hybrid NER, anomaly detection, forecasting baselines, typed inference contracts, and CI verification.
 
 ## Project Links
 
@@ -78,6 +78,9 @@ flowchart LR
 - Live Open-Meteo weather and BIPAD hydrology/incident adapters.
 - Reproducible TF-IDF + Logistic Regression flood-report classification baseline.
 - Initial NLP baseline metrics are recorded and evaluated in CI; current macro F1 is 0.667 on the starter dataset.
+- Hybrid gazetteer/rule NER for districts, rivers, roads, and dates.
+- Z-score plus Isolation Forest anomaly ensemble.
+- Naive and seasonal forecasting baseline comparison.
 
 ## Architecture
 
@@ -134,7 +137,7 @@ docs/                    Architecture, ADRs, API, security, and operations
 - Phase 0 — GitHub portfolio standard, documentation, contribution workflow, and project evidence structure. **Complete.**
 - Phase 1 — Docker platform foundation, service scaffolding, health checks, schemas, and Kafka topics. **Complete and runtime-verified.**
 - Phase 2 — Source adapters, raw payload storage, normalization, deduplication, retries, and replay fixtures. **Complete and integration-verified.**
-- Phase 3 — NLP extraction, anomaly detection, forecasting baselines, and model evaluation. **In progress.**
+- Phase 3 — NLP extraction, anomaly detection, forecasting baselines, and model evaluation. **Complete and CI-verified.**
 - Phase 4 — Correlation, Neo4j graph intelligence, deterministic risk scoring, and auditability.
 - Phase 5 — Hybrid RAG, evidence packaging, provider-neutral LLM reasoning, and citation validation.
 - Phase 6 — JWT/RBAC, REST API, analyst workflows, Next.js dashboard, and live updates.
@@ -146,7 +149,9 @@ Each completed phase will include an acceptance checklist, architecture decision
 
 Phase 2 evidence is summarized in [`docs/phase-reports/phase-2.md`](docs/phase-reports/phase-2.md).
 
-Phase 3 currently includes the reproducible NLP baseline; anomaly detection, forecasting, NER, and expanded evaluation are next.
+Phase 3 includes the reproducible NLP baseline, hybrid NER, anomaly ensemble, forecasting comparison, and typed inference schemas.
+
+Phase 3 evidence is summarized in [`docs/phase-reports/phase-3.md`](docs/phase-reports/phase-3.md).
 
 Railway deployment instructions are documented in [`docs/operations/railway.md`](docs/operations/railway.md). The repository is deployment-ready; the public service is not claimed as deployed until the Railway project and dependency bindings are configured.
 
