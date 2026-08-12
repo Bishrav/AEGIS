@@ -153,6 +153,8 @@ Phase 3 includes the reproducible NLP baseline, hybrid NER, anomaly ensemble, fo
 
 Phase 3 evidence is summarized in [`docs/phase-reports/phase-3.md`](docs/phase-reports/phase-3.md).
 
+Phase 4 progress is tracked in [`docs/phase-reports/phase-4-progress.md`](docs/phase-reports/phase-4-progress.md), including the deterministic replay pipeline, graph projection boundary, and immutable risk audit records.
+
 Railway deployment instructions are documented in [`docs/operations/railway.md`](docs/operations/railway.md). The repository is deployment-ready; the public service is not claimed as deployed until the Railway project and dependency bindings are configured.
 
 ## Scope Boundaries
