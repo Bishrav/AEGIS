@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.local/schemas/inference/forecast-result/v1",
+  "title": "AEGIS Forecast Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["selected_model", "mae", "rmse", "dataset_version", "schema_version"],
+  "properties": {
+    "selected_model": { "type": "string", "enum": ["naive", "seasonal"] },
+    "mae": { "type": "number", "minimum": 0 },
+    "rmse": { "type": "number", "minimum": 0 },
+    "dataset_version": { "type": "string" },
+    "schema_version": { "type": "string", "const": "forecast-result.v1" }
+  }
+}
+

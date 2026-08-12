@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.local/schemas/inference/anomaly-result/v1",
+  "title": "AEGIS Anomaly Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["value", "anomaly_probability", "is_anomaly", "model_version", "schema_version"],
+  "properties": {
+    "value": { "type": "number" },
+    "anomaly_probability": { "type": "number", "minimum": 0, "maximum": 1 },
+    "is_anomaly": { "type": "boolean" },
+    "model_version": { "type": "string" },
+    "schema_version": { "type": "string", "const": "anomaly-result.v1" }
+  }
+}
+

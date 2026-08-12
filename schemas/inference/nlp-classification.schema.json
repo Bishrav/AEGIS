@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aegis.local/schemas/inference/nlp-classification/v1",
+  "title": "AEGIS NLP Classification Result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["label", "confidence", "model_version", "schema_version"],
+  "properties": {
+    "label": { "type": "string", "enum": ["FLOOD", "HEAVY_RAIN", "ROAD_CLOSURE", "NORMAL"] },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "model_version": { "type": "string" },
+    "schema_version": { "type": "string", "const": "nlp-classification.v1" }
+  }
+}
+
