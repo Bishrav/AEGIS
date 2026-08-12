@@ -64,6 +64,13 @@ python -m unittest tests.phase7.test_replay_acceptance -v
 - Model Evaluation now exports JSON metrics and downloads a Markdown evaluation report.
 - Smoke verification passed: analyst login `200`, document ingestion `200`, and `/incidents`, `/evidence`, `/graph`, and `/models` each returned `200` with rendered HTML.
 
+## Eighth milestone — interaction audit and graph visualization
+
+- Audited every dashboard button and replaced static incident controls with working filters, search, CSV export, and detail navigation.
+- Overview incident arrows now open the corresponding incident detail pages.
+- Replaced the graph placeholder geometry with an SVG topology: directional edges, relationship labels, selectable nodes, node metadata, highlighted connections, traversal filtering, and Reset view.
+- Full route smoke test passed for `/`, `/incidents`, `/evidence`, `/graph`, `/models`, `/sources`, and `/observability`.
+
 ## Fifth milestone — reproducible load evidence
 
 - Added [`benchmarks/phase7_load.py`](../../benchmarks/phase7_load.py), a standard-library benchmark for API health, incident listing, and evidence search.

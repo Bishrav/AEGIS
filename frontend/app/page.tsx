@@ -24,6 +24,7 @@ export default function Dashboard() {
       .catch(() => undefined);
     const viewAll = Array.from(document.querySelectorAll("button")).find((button) => button.textContent?.includes("View all incidents"));
     viewAll?.addEventListener("click", () => { window.location.href = "/incidents"; });
+    document.querySelectorAll<HTMLButtonElement>(".arrow").forEach((button, index) => button.addEventListener("click", () => { window.location.href = `/incidents/${incidents[index].id}`; }));
     return () => viewAll?.removeEventListener("click", () => { window.location.href = "/incidents"; });
   }, []);
 
