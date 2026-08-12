@@ -14,6 +14,8 @@ Autonomous Event & Global Intelligence System — Nepal flood-risk intelligence 
 | Delivery roadmap | [`docs/roadmap.md`](docs/roadmap.md) |
 | Operations runbook | [`docs/operations/local-development.md`](docs/operations/local-development.md) |
 | Railway deployment | [`docs/operations/railway.md`](docs/operations/railway.md) |
+| Local dashboard | [http://localhost:3001](http://localhost:3001) |
+| API gateway docs | [http://localhost:8000/docs](http://localhost:8000/docs) |
 
 ## What AEGIS Does
 
@@ -69,6 +71,8 @@ flowchart LR
 - Unit, contract, integration, replay, performance, and failure-injection tests.
 - OpenTelemetry traces, structured logs, metrics, and CI quality gates.
 - Railway-ready isolated ingestion deployment with Dockerfile, healthcheck, and config-as-code.
+- Next.js operations console with Overview, Incidents, Evidence, Knowledge Graph, Model Evaluation, Source Health, and Observability pages.
+- JWT-cookie authentication, RBAC-protected gateway routes, live incident listing, status updates, and analyst notes.
 - Typed adapter contract with deterministic canonical event IDs.
 - Idempotent raw-record capture, duplicate suppression, and dead-letter routing.
 - MinIO raw-payload persistence and Kafka normalized-event publication.
@@ -86,7 +90,7 @@ flowchart LR
 
 ```mermaid
 flowchart TB
-  browser[Next.js Operations Console] --> gateway[Spring Boot API Gateway]
+  browser[Next.js Operations Console] --> gateway[Python API Gateway]
   gateway --> auth[JWT Auth + RBAC]
   gateway --> incident[Incident / Audit APIs]
   gateway --> python[Python AI Services]
@@ -121,7 +125,9 @@ The local platform includes PostgreSQL/PostGIS, Redpanda, Redis, MinIO, Neo4j, P
 ## Repository Structure
 
 ```text
-apps/                    API gateway and dashboard
+  frontend/               Next.js operations dashboard
+  services/api/            Authenticated API gateway
+  services/auth/           JWT authentication and RBAC
 services/                Ingestion and processing services
 algorithms/              Correlation and graph algorithms
 ml/                      Training, inference, and evaluation
@@ -168,6 +174,19 @@ The Phase 6 authentication API is available locally at `http://localhost:8006/do
 The authenticated dashboard-facing API gateway is available locally at `http://localhost:8000/docs`.
 
 The AEGIS operations dashboard is available locally at `http://localhost:3001`.
+
+Dashboard routes:
+
+- `/` — Overview
+- `/incidents` — Incident queue
+- `/incidents/INC-042` — Incident detail and risk timeline
+- `/evidence` — Hybrid evidence explorer
+- `/graph` — Knowledge graph view
+- `/models` — Model evaluation
+- `/sources` — Source health
+- `/observability` — Runtime telemetry
+
+Phase 6 currently has live incident listing, RBAC-protected status updates, and analyst note creation. Live SSE/WebSocket updates and final end-to-end acceptance remain in progress.
 
 Railway deployment instructions are documented in [`docs/operations/railway.md`](docs/operations/railway.md). The repository is deployment-ready; the public service is not claimed as deployed until the Railway project and dependency bindings are configured.
 
