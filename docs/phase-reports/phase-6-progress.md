@@ -12,6 +12,8 @@ Phase 6 delivers the secured application surface: JWT authentication, RBAC, cons
 - JWT login/logout and `/auth/me` endpoints with HttpOnly-cookie transport.
 - Development auth container exposed on port 8006.
 - Authenticated API gateway exposing the dashboard-facing application surface on port 8000.
+- Next.js operations dashboard with responsive overview, incident queue, event stream, risk map, and sign-in flow.
+- Credentialed local CORS between the dashboard and API gateway.
 
 ## Next milestones
 

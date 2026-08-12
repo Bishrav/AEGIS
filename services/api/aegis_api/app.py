@@ -7,11 +7,19 @@ import urllib.parse
 import urllib.request
 
 from fastapi import FastAPI, HTTPException, Request, Response
+from fastapi.middleware.cors import CORSMiddleware
 
 from aegis_auth.rbac import Permission, UserContext, authorize
 from aegis_auth.app import COOKIE_NAME, authenticate_credentials, decode_token, issue_token
 
 app = FastAPI(title="AEGIS API Gateway", version="0.1.0")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3001"],
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PATCH", "OPTIONS"],
+    allow_headers=["Content-Type"],
+)
 
 
 def current_user(request: Request) -> UserContext:
