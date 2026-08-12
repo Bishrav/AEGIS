@@ -163,6 +163,8 @@ Phase 5 completion evidence is documented in [`docs/phase-reports/phase-5.md`](d
 
 Phase 6 progress is documented in [`docs/phase-reports/phase-6-progress.md`](docs/phase-reports/phase-6-progress.md), beginning with the tested RBAC policy foundation.
 
+The Phase 6 authentication API is available locally at `http://localhost:8006/docs`.
+
 Railway deployment instructions are documented in [`docs/operations/railway.md`](docs/operations/railway.md). The repository is deployment-ready; the public service is not claimed as deployed until the Railway project and dependency bindings are configured.
 
 ## Scope Boundaries
