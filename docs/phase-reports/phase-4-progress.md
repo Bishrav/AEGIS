@@ -8,6 +8,7 @@
 - Versioned transparent risk scoring.
 - Incident-to-risk component mapping.
 - Neo4j projection/query store boundary.
+- Immutable risk audit records preserving policy version and score components.
 
 ## Remaining Phase 4 work
 
