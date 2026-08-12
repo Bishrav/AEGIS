@@ -26,6 +26,29 @@ services:
       timeout: 3s
       retries: 10
 
+  api:
+    build:
+      context: .
+      dockerfile: services/api/Dockerfile
+    depends_on:
+      auth:
+        condition: service_healthy
+      correlation:
+        condition: service_healthy
+      evidence:
+        condition: service_healthy
+    environment:
+      AEGIS_JWT_SECRET: ${AEGIS_JWT_SECRET:-local-development-only-change-me}
+      CORRELATION_URL: http://correlation:8000
+      EVIDENCE_URL: http://evidence:8000
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/health')\""]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
   ingestion:
     build: ./services/ingestion
     depends_on:

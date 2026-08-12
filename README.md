@@ -165,6 +165,8 @@ Phase 6 progress is documented in [`docs/phase-reports/phase-6-progress.md`](doc
 
 The Phase 6 authentication API is available locally at `http://localhost:8006/docs`.
 
+The authenticated dashboard-facing API gateway is available locally at `http://localhost:8000/docs`.
+
 Railway deployment instructions are documented in [`docs/operations/railway.md`](docs/operations/railway.md). The repository is deployment-ready; the public service is not claimed as deployed until the Railway project and dependency bindings are configured.
 
 ## Scope Boundaries
