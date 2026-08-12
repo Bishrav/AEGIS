@@ -146,7 +146,7 @@ docs/                    Architecture, ADRs, API, security, and operations
 - Phase 3 — NLP extraction, anomaly detection, forecasting baselines, and model evaluation. **Complete and CI-verified.**
 - Phase 4 — Correlation, Neo4j graph intelligence, deterministic risk scoring, and auditability. **Complete and integration-verified.**
 - Phase 5 — Hybrid RAG, evidence packaging, provider-neutral LLM reasoning, and citation validation. **Complete and Supabase-verified.**
-- Phase 6 — JWT/RBAC, REST API, analyst workflows, Next.js dashboard, and live updates. **In progress.**
+- Phase 6 — JWT/RBAC, REST API, analyst workflows, Next.js dashboard, and live updates. **Complete.**
 - Phase 7 — Full verification, load/failure testing, observability, deployment, screenshots, benchmarks, and recruiter demo.
 
 ## Portfolio Evidence
@@ -186,7 +186,7 @@ Dashboard routes:
 - `/sources` — Source health
 - `/observability` — Runtime telemetry
 
-Phase 6 currently has live incident listing and detail pages, RBAC-protected status updates, analyst notes, Redis-backed SSE incident updates, and evidence search. Final end-to-end acceptance verification remains in progress.
+Phase 6 is complete: live incident listing and detail pages, RBAC-protected status updates, analyst notes, Redis-backed SSE incident updates, evidence search, Docker verification, and authenticated end-to-end acceptance checks are documented in [`docs/phase-reports/phase-6-progress.md`](docs/phase-reports/phase-6-progress.md).
 
 Railway deployment instructions are documented in [`docs/operations/railway.md`](docs/operations/railway.md). The repository is deployment-ready; the public service is not claimed as deployed until the Railway project and dependency bindings are configured.
 
