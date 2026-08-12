@@ -33,8 +33,13 @@ python -m unittest tests.phase7.test_replay_acceptance -v
 
 ## Remaining milestones
 
-- Add replay determinism and duplicate-delivery acceptance checks.
-- Add failure-injection and service recovery checks.
 - Add load benchmark reports for ingestion, incident queries, graph traversal, risk, and evidence retrieval.
 - Add Prometheus/Grafana dashboard evidence and CI quality gates.
 - Complete Railway deployment verification, screenshots, and recruiter demo documentation.
+
+## Third milestone — failure recovery evidence
+
+- Added [`tests/phase7/test_failure_recovery.py`](../../tests/phase7/test_failure_recovery.py).
+- A transient broker failure is injected and verified to recover on the third retry without dead-lettering.
+- A permanent upstream timeout is verified to produce a degraded source-health record with an actionable error.
+- These checks are required by the Phase 7 CI job.

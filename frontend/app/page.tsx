@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { LiveBadge } from "./components/live-badge";
 
 type User = { user_id: string; role: string };
@@ -36,7 +37,7 @@ export default function Dashboard() {
     <aside className="sidebar">
       <div className="brand"><span className="brand-mark">A</span><span>AEGIS</span></div>
       <p className="eyebrow">OPERATIONS CENTER</p>
-      <nav><a className="active" href="#overview">Overview</a><a href="#incidents">Incidents</a><a href="#evidence">Evidence</a><a href="#graph">Knowledge graph</a><a href="#models">Model evaluation</a></nav>
+      <nav><Link className="active" href="/">Overview</Link><Link href="/incidents">Incidents</Link><Link href="/evidence">Evidence</Link><Link href="/graph">Knowledge graph</Link><Link href="/models">Model evaluation</Link></nav>
       <div className="sidebar-footer"><span className="pulse" /> Systems nominal<br /><small>v0.6.0 · Nepal flood MVP</small></div>
     </aside>
     <section className="content">

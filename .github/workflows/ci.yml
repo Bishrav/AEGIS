@@ -92,6 +92,10 @@ jobs:
         env:
           PYTHONPATH: services/ingestion
         run: python -m unittest tests.phase7.test_replay_acceptance -v
+      - name: Verify failure recovery behavior
+        env:
+          PYTHONPATH: services/ingestion
+        run: python -m unittest tests.phase7.test_failure_recovery -v
 
   integration:
     runs-on: ubuntu-latest
