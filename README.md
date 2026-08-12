@@ -139,7 +139,7 @@ docs/                    Architecture, ADRs, API, security, and operations
 - Phase 2 — Source adapters, raw payload storage, normalization, deduplication, retries, and replay fixtures. **Complete and integration-verified.**
 - Phase 3 — NLP extraction, anomaly detection, forecasting baselines, and model evaluation. **Complete and CI-verified.**
 - Phase 4 — Correlation, Neo4j graph intelligence, deterministic risk scoring, and auditability. **Complete and integration-verified.**
-- Phase 5 — Hybrid RAG, evidence packaging, provider-neutral LLM reasoning, and citation validation. **In progress.**
+- Phase 5 — Hybrid RAG, evidence packaging, provider-neutral LLM reasoning, and citation validation. **Code complete; Supabase migration pending MCP reconnection.**
 - Phase 6 — JWT/RBAC, REST API, analyst workflows, Next.js dashboard, and live updates.
 - Phase 7 — Full verification, load/failure testing, observability, deployment, screenshots, benchmarks, and recruiter demo.
 
@@ -158,6 +158,8 @@ Phase 4 completion evidence is documented in [`docs/phase-reports/phase-4-progre
 Phase 5 progress is documented in [`docs/phase-reports/phase-5-progress.md`](docs/phase-reports/phase-5-progress.md), including stable evidence IDs, hybrid retrieval, Recall@K evaluation, and the provider-neutral explanation boundary.
 
 The current Phase 5 slice also includes a Supabase/Postgres-compatible evidence migration, incident evidence search API, citation-enforcing reasoning service, and configurable OpenAI-compatible provider boundary. Remote migration execution remains pending until the Supabase MCP connection is available in the active Codex session.
+
+Phase 5 completion evidence is documented in [`docs/phase-reports/phase-5.md`](docs/phase-reports/phase-5.md).
 
 Railway deployment instructions are documented in [`docs/operations/railway.md`](docs/operations/railway.md). The repository is deployment-ready; the public service is not claimed as deployed until the Railway project and dependency bindings are configured.
 

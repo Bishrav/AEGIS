@@ -62,6 +62,23 @@ jobs:
           PYTHONPATH: .
         run: python -m unittest discover -s tests -v
 
+  phase5-rag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install evidence and reasoning dependencies
+        run: python -m pip install -r services/evidence/requirements.txt -r services/reasoning/requirements.txt
+      - name: Run Phase 5 tests
+        env:
+          PYTHONPATH: algorithms/rag:services/reasoning:services/evidence
+        run: |
+          python -m unittest discover -s algorithms/rag/tests -v
+          python -m unittest discover -s services/reasoning/tests -v
+          python -m unittest discover -s services/evidence/tests -v
+
   integration:
     runs-on: ubuntu-latest
     steps:

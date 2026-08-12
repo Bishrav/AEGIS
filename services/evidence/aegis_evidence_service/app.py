@@ -1,15 +1,20 @@
 from __future__ import annotations
 
+import os
+
 from fastapi import FastAPI, HTTPException
 
 from aegis_rag.chunking import chunk_document
 from aegis_rag.models import Document
-from aegis_rag.retrieval import HybridRetriever
-from aegis_rag.store import InMemoryEvidenceStore
+from aegis_rag.retrieval import HashingEmbedder, HttpEmbeddingProvider, HybridRetriever
+from aegis_rag.store import InMemoryEvidenceStore, PostgresEvidenceStore
 
 app = FastAPI(title="AEGIS Evidence Service", version="0.1.0")
-store = InMemoryEvidenceStore()
-retriever = HybridRetriever()
+embedding_provider = HttpEmbeddingProvider(
+    os.environ["EMBEDDING_ENDPOINT"], os.environ["EMBEDDING_API_KEY"], os.environ["EMBEDDING_MODEL"],
+) if all(os.getenv(name) for name in ("EMBEDDING_ENDPOINT", "EMBEDDING_API_KEY", "EMBEDDING_MODEL")) else HashingEmbedder()
+store = PostgresEvidenceStore(os.environ["EVIDENCE_POSTGRES_DSN"]) if os.getenv("EVIDENCE_POSTGRES_DSN") else InMemoryEvidenceStore()
+retriever = HybridRetriever(embedding_provider)
 
 
 @app.get("/health")

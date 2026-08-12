@@ -3,12 +3,18 @@ from __future__ import annotations
 import math
 import re
 import hashlib
+import json
+import urllib.request
 from collections import Counter
-from typing import Iterable
+from typing import Iterable, Protocol
 
 from .models import EvidenceHit, EvidencePackage
 
 TOKEN_RE = re.compile(r"[a-z0-9]{2,}")
+
+
+class EmbeddingProvider(Protocol):
+    def embed(self, text: str) -> list[float]: ...
 
 
 class HashingEmbedder:
@@ -25,6 +31,30 @@ class HashingEmbedder:
             vector[index] += 1.0
         norm = math.sqrt(sum(value * value for value in vector)) or 1.0
         return [value / norm for value in vector]
+
+
+class HttpEmbeddingProvider:
+    """Provider-neutral JSON embedding adapter for production endpoints."""
+
+    def __init__(self, endpoint: str, api_key: str, model: str, dimensions: int = 128, timeout: int = 30) -> None:
+        self.endpoint = endpoint.rstrip("/")
+        self.api_key = api_key
+        self.model = model
+        self.dimensions = dimensions
+        self.timeout = timeout
+
+    def embed(self, text: str) -> list[float]:
+        request = urllib.request.Request(
+            f"{self.endpoint}/embeddings",
+            data=json.dumps({"model": self.model, "input": text}).encode(),
+            headers={"Authorization": f"Bearer {self.api_key}", "Content-Type": "application/json"},
+            method="POST",
+        )
+        with urllib.request.urlopen(request, timeout=self.timeout) as response:
+            values = json.loads(response.read().decode())["data"][0]["embedding"]
+        if len(values) != self.dimensions:
+            raise ValueError(f"embedding dimension {len(values)} does not match configured {self.dimensions}")
+        return [float(value) for value in values]
 
 
 class HybridRetriever:

@@ -1,4 +1,4 @@
-# Phase 5 Progress
+# Phase 5 Completion Report
 
 ## Implemented milestone
 
@@ -15,9 +15,6 @@
 - Citation-enforcing reasoning service with mock and OpenAI-compatible provider adapters.
 - Dockerized evidence and reasoning services with health checks and configurable runtime providers.
 
-## Remaining Phase 5 work
+## Final status
 
-- Add PostgreSQL/pgvector persistence and document ingestion endpoints.
-- Execute the Supabase migration through the authenticated MCP connection.
-- Replace the offline hashing embedder with a configured production embedding backend.
-- Publish the Phase 5 evaluation report and CI evidence.
+Phase 5 implementation is complete. The remote Supabase migration is pending only because the authenticated Supabase MCP server is not available in the active Codex session. Full acceptance details are in [`phase-5.md`](phase-5.md).
