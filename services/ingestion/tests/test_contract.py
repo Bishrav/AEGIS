@@ -9,10 +9,11 @@ from aegis_ingestion.serialization import canonical_event_to_dict
 
 class EventContractTests(unittest.TestCase):
     def test_normalized_fixture_matches_event_v1_shape(self):
-        schema = json.loads(Path("schemas/events/canonical-event.schema.json").read_text(encoding="utf-8"))
+        repo_root = Path(__file__).resolve().parents[3]
+        schema = json.loads((repo_root / "schemas/events/canonical-event.schema.json").read_text(encoding="utf-8"))
         event = canonical_event_to_dict(
             EventNormalizer().normalize(
-                next(JsonReplayAdapter("weather", Path("services/ingestion/fixtures/weather.json")).read())
+                next(JsonReplayAdapter("weather", repo_root / "services/ingestion/fixtures/weather.json").read())
             )
         )
         for field in schema["required"]:
@@ -21,4 +22,3 @@ class EventContractTests(unittest.TestCase):
         self.assertIn(event["event_type"], schema["properties"]["event_type"]["enum"])
         self.assertGreaterEqual(event["source_confidence"], 0)
         self.assertLessEqual(event["source_confidence"], 1)
-

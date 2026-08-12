@@ -1,6 +1,8 @@
 import json
 import os
+import time
 import unittest
+from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 
@@ -10,9 +12,20 @@ class RuntimeIntegrationTests(unittest.TestCase):
 
     def request(self, path: str, method: str = "GET") -> dict:
         request = Request(f"{self.base_url}{path}", method=method)
-        with urlopen(request, timeout=60) as response:
-            self.assertEqual(response.status, 200)
-            return json.load(response)
+        last_error = None
+        for attempt in range(15):
+            try:
+                with urlopen(request, timeout=10) as response:
+                    self.assertEqual(response.status, 200)
+                    return json.load(response)
+            except (ConnectionResetError, TimeoutError, URLError, HTTPError) as error:
+                last_error = error
+                if isinstance(error, HTTPError) and error.code < 500:
+                    raise
+                if attempt == 14:
+                    raise
+                time.sleep(2)
+        raise AssertionError(f"request failed after retries: {last_error}")
 
     def test_running_stack_exposes_ingestion_contract(self):
         self.assertEqual(self.request("/health")["status"], "ok")
@@ -21,4 +34,3 @@ class RuntimeIntegrationTests(unittest.TestCase):
         self.assertEqual(replay["source_type"], "weather")
         self.assertIn("published", replay)
         self.assertIn("sources", self.request("/sources/health"))
-
