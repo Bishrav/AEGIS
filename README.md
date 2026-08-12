@@ -4,6 +4,8 @@ Autonomous Event & Global Intelligence System — Nepal flood-risk intelligence 
 
 > Portfolio status: Phase 7 — production evidence in progress. AEGIS includes a secured operations dashboard, live incident workflow, evidence retrieval, and a repeatable end-to-end acceptance harness.
 
+> **Live demo:** [Open the AEGIS Operations Dashboard](https://aegis-dashboard-beta.vercel.app)
+
 ## Project Links
 
 | Resource | Link |
@@ -15,6 +17,9 @@ Autonomous Event & Global Intelligence System — Nepal flood-risk intelligence 
 | Operations runbook | [`docs/operations/local-development.md`](docs/operations/local-development.md) |
 | Railway deployment | [`docs/operations/railway.md`](docs/operations/railway.md) |
 | Render deployment | [`docs/operations/render.md`](docs/operations/render.md) |
+| Free Render portfolio deployment | [`render.free.yaml`](render.free.yaml) |
+| Vercel portfolio deployment | [`docs/operations/vercel.md`](docs/operations/vercel.md) |
+| Live dashboard | [aegis-dashboard-beta.vercel.app](https://aegis-dashboard-beta.vercel.app) |
 | Recruiter demo | [`docs/portfolio/recruiter-demo.md`](docs/portfolio/recruiter-demo.md) |
 | Local dashboard | [http://localhost:3001](http://localhost:3001) |
 | API gateway docs | [http://localhost:8000/docs](http://localhost:8000/docs) |

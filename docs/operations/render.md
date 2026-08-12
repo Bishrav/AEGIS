@@ -4,6 +4,8 @@ AEGIS is Render-compatible, but its current gateway depends on private correlati
 
 The repository includes [`render.yaml`](../../render.yaml) as the deployment contract. It uses Render Key Value and expects the Supabase/Postgres connection strings and final browser origins to be entered as protected dashboard values.
 
+For a zero-cost portfolio demo, use [`render.free.yaml`](../../render.free.yaml). It keeps the production Blueprint unchanged but runs correlation and evidence as Free Web Services with public HTTPS URLs. The API-to-service `X-AEGIS-Service-Token` protects those internal endpoints. Enter the same strong token in all three services when Render prompts for the `AEGIS_SERVICE_TOKEN` variables.
+
 ## Recommended first production slice
 
 | Service | Render type | Required configuration |
@@ -18,6 +20,21 @@ The repository includes [`render.yaml`](../../render.yaml) as the deployment con
 Render private services are not available on the Free plan. Do not expose correlation or evidence as public services just to avoid that restriction; use a paid private service plan or deploy the modular backend as a single production service later.
 
 The Blueprint intentionally uses `starter` for the two private services because Render does not offer Free plans for private services. Review the resulting monthly cost in Render before creating the Blueprint.
+
+## Free portfolio deployment
+
+The free profile is suitable for a recruiter demo, not guaranteed production uptime. Free Web Services sleep after inactivity, have limited monthly hours, and may take about a minute to wake. Use Supabase for durable PostgreSQL storage; do not use Render's Free Postgres for the long-term AEGIS database because it expires after 30 days.
+
+Set these values in the Render dashboard for `render.free.yaml`:
+
+```env
+AEGIS_SERVICE_TOKEN=<same-random-token-for-api-correlation-evidence>
+POSTGRES_DSN=<supabase-postgres-connection-string>
+EVIDENCE_POSTGRES_DSN=<supabase-postgres-connection-string>
+ALLOWED_ORIGINS=https://aegis-frontend-free.onrender.com
+```
+
+Deploy this profile from Render's Blueprint flow by selecting `render.free.yaml`. After deployment, verify the API with `/health` and open the frontend URL. The first request after an idle period may be slow while a Free service wakes.
 
 ## Environment variables
 

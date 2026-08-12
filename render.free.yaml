@@ -1,0 +1,81 @@
+services:
+  - type: web
+    name: aegis-api-free
+    runtime: docker
+    plan: free
+    dockerfilePath: ./services/api/Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    autoDeployTrigger: checksPass
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: COOKIE_SAMESITE
+        value: none
+      - key: AEGIS_JWT_SECRET
+        generateValue: true
+      - key: AEGIS_SERVICE_TOKEN
+        sync: false
+      - key: ALLOWED_ORIGINS
+        sync: false
+      - key: CORRELATION_URL
+        value: https://aegis-correlation-free.onrender.com
+      - key: EVIDENCE_URL
+        value: https://aegis-evidence-free.onrender.com
+      - key: REDIS_URL
+        fromService:
+          type: keyvalue
+          name: aegis-redis-free
+          property: connectionString
+
+  - type: web
+    name: aegis-correlation-free
+    runtime: docker
+    plan: free
+    dockerfilePath: ./services/correlation/Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    autoDeployTrigger: checksPass
+    envVars:
+      - key: AEGIS_SERVICE_TOKEN
+        sync: false
+      - key: POSTGRES_DSN
+        sync: false
+      - key: REDIS_URL
+        fromService:
+          type: keyvalue
+          name: aegis-redis-free
+          property: connectionString
+
+  - type: web
+    name: aegis-evidence-free
+    runtime: docker
+    plan: free
+    dockerfilePath: ./services/evidence/Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    autoDeployTrigger: checksPass
+    envVars:
+      - key: AEGIS_SERVICE_TOKEN
+        sync: false
+      - key: EVIDENCE_POSTGRES_DSN
+        sync: false
+
+  - type: keyvalue
+    name: aegis-redis-free
+    plan: free
+    ipAllowList:
+      - source: 0.0.0.0/0
+        description: Free Render web services
+
+  - type: web
+    name: aegis-frontend-free
+    runtime: docker
+    plan: free
+    dockerfilePath: ./frontend/Dockerfile
+    dockerContext: .
+    healthCheckPath: /
+    autoDeployTrigger: checksPass
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        value: https://aegis-api-free.onrender.com
