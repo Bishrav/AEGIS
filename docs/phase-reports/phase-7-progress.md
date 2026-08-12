@@ -77,6 +77,14 @@ python -m unittest tests.phase7.test_replay_acceptance -v
 - Added [`docs/portfolio/recruiter-demo.md`](../portfolio/recruiter-demo.md) with a two-minute walkthrough, engineering talking points, screenshot checklist, and explicit deployment limitations.
 - The deployment test intentionally skips when `AEGIS_DEPLOYMENT_URL` is unset and avoids live provider pulls during routine verification.
 
+## Deployment-hardening milestone
+
+- Centralized all browser API calls behind `NEXT_PUBLIC_API_URL`; localhost is now only the development fallback.
+- Made API CORS origins and cross-site cookie policy environment-driven.
+- Added an API `/ready` endpoint that checks the correlation and evidence dependencies.
+- Added Render deployment documentation for the current gateway, private-service, Postgres, Key Value, and frontend topology.
+- The actual public deployment remains blocked until a Render project and the required private services/datastores are provisioned.
+
 ## Fifth milestone — reproducible load evidence
 
 - Added [`benchmarks/phase7_load.py`](../../benchmarks/phase7_load.py), a standard-library benchmark for API health, incident listing, and evidence search.

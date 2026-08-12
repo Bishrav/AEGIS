@@ -1,12 +1,17 @@
 import unittest
+from unittest.mock import patch
 
-from aegis_api.app import health, require
+from aegis_api.app import health, ready, require
 from aegis_auth.rbac import Permission, Role, UserContext
 
 
 class GatewayTest(unittest.TestCase):
     def test_gateway_health_identifies_application_surface(self):
         self.assertEqual(health(), {"status": "ok", "service": "api-gateway"})
+
+    def test_gateway_readiness_identifies_application_surface(self):
+        with patch("aegis_api.app._request_json", return_value={"status": "ok"}):
+            self.assertEqual(ready(), {"status": "ready", "service": "api-gateway"})
 
     def test_rbac_boundary_keeps_viewer_out_of_mutation_permissions(self):
         from aegis_auth.rbac import authorize

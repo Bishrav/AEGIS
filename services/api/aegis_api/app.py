@@ -15,9 +15,10 @@ from aegis_auth.rbac import Permission, UserContext, authorize
 from aegis_auth.app import COOKIE_NAME, authenticate_credentials, decode_token, issue_token
 
 app = FastAPI(title="AEGIS API Gateway", version="0.1.0")
+allowed_origins = [origin.strip() for origin in os.getenv("ALLOWED_ORIGINS", "http://localhost:3001").split(",") if origin.strip()]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3001"],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["GET", "POST", "PATCH", "OPTIONS"],
     allow_headers=["Content-Type"],
@@ -64,6 +65,16 @@ def health() -> dict[str, str]:
     return {"status": "ok", "service": "api-gateway"}
 
 
+@app.get("/ready")
+def ready() -> dict[str, str]:
+    for service_url in (os.getenv("CORRELATION_URL", "http://correlation:8000"), os.getenv("EVIDENCE_URL", "http://evidence:8000")):
+        try:
+            _request_json(service_url, "/health")
+        except HTTPException as exc:
+            raise HTTPException(status_code=503, detail="application dependencies unavailable") from exc
+    return {"status": "ready", "service": "api-gateway"}
+
+
 @app.get("/api/v1/me")
 def me(request: Request) -> dict[str, str]:
     user = current_user(request)
@@ -74,7 +85,7 @@ def me(request: Request) -> dict[str, str]:
 def login(payload: dict, response: Response) -> dict[str, str]:
     user = authenticate_credentials(str(payload.get("username", "")), str(payload.get("password", "")))
     token = issue_token(user, os.getenv("AEGIS_JWT_SECRET", "local-development-only-change-me"))
-    response.set_cookie(COOKIE_NAME, token, httponly=True, secure=os.getenv("ENVIRONMENT") == "production", samesite="lax", max_age=1800)
+    response.set_cookie(COOKIE_NAME, token, httponly=True, secure=os.getenv("ENVIRONMENT") == "production", samesite=os.getenv("COOKIE_SAMESITE", "lax").lower(), max_age=1800)
     return {"user_id": user.user_id, "role": user.role.value}
 
 

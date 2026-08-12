@@ -39,6 +39,8 @@ services:
         condition: service_healthy
     environment:
       AEGIS_JWT_SECRET: ${AEGIS_JWT_SECRET:-local-development-only-change-me}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:3001}
+      COOKIE_SAMESITE: ${COOKIE_SAMESITE:-lax}
       CORRELATION_URL: http://correlation:8000
       EVIDENCE_URL: http://evidence:8000
       REDIS_URL: redis://redis:6379/0

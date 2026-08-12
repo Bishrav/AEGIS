@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { apiUrl } from "../lib/api";
 
 export function LiveBadge() {
   const [connected, setConnected] = useState(false);
   useEffect(() => {
-    const source = new EventSource("http://localhost:8000/api/v1/events/stream", { withCredentials: true });
+    const source = new EventSource(apiUrl("/api/v1/events/stream"), { withCredentials: true });
     source.onopen = () => setConnected(true);
     source.onerror = () => setConnected(false);
     return () => source.close();

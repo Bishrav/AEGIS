@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { apiRequest } from "./lib/api";
 import { LiveBadge } from "./components/live-badge";
 
 type User = { user_id: string; role: string };
@@ -18,7 +19,7 @@ export default function Dashboard() {
   const [credentials, setCredentials] = useState({ username: "analyst", password: "analyst-dev" });
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/v1/me", { credentials: "include" })
+    apiRequest("/api/v1/me")
       .then((response) => response.ok ? response.json() : null)
       .then(setUser)
       .catch(() => undefined);
@@ -30,7 +31,7 @@ export default function Dashboard() {
 
   async function login(event: React.FormEvent) {
     event.preventDefault();
-    const response = await fetch("http://localhost:8000/api/v1/auth/login", { method: "POST", credentials: "include", headers: { "Content-Type": "application/json" }, body: JSON.stringify(credentials) });
+    const response = await apiRequest("/api/v1/auth/login", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(credentials) });
     if (response.ok) {
       setUser(await response.json());
       setLoginOpen(false);

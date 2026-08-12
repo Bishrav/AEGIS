@@ -14,6 +14,7 @@ Autonomous Event & Global Intelligence System — Nepal flood-risk intelligence 
 | Delivery roadmap | [`docs/roadmap.md`](docs/roadmap.md) |
 | Operations runbook | [`docs/operations/local-development.md`](docs/operations/local-development.md) |
 | Railway deployment | [`docs/operations/railway.md`](docs/operations/railway.md) |
+| Render deployment | [`docs/operations/render.md`](docs/operations/render.md) |
 | Recruiter demo | [`docs/portfolio/recruiter-demo.md`](docs/portfolio/recruiter-demo.md) |
 | Local dashboard | [http://localhost:3001](http://localhost:3001) |
 | API gateway docs | [http://localhost:8000/docs](http://localhost:8000/docs) |
