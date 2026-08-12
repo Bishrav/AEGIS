@@ -1,4 +1,7 @@
 import unittest
+from unittest.mock import patch
+
+from fastapi import HTTPException
 
 from aegis_correlation_service.app import add_note, correlate, list_incidents, update_status
 
@@ -13,6 +16,12 @@ class WorkflowTest(unittest.TestCase):
         self.assertEqual(updated["status"], "ACKNOWLEDGED")
         self.assertEqual(noted["notes"][-1]["author"], "user-analyst")
         self.assertTrue(any(item["incident_id"] == "workflow-1" for item in list_incidents()["incidents"]))
+
+    def test_public_free_service_requires_internal_token_when_configured(self):
+        with patch.dict("os.environ", {"AEGIS_SERVICE_TOKEN": "test-token"}):
+            with self.assertRaises(HTTPException) as error:
+                list_incidents(None)
+        self.assertEqual(error.exception.status_code, 401)
 
 
 if __name__ == "__main__":

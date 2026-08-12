@@ -45,6 +45,9 @@ def _request_json(base_url: str, path: str, method: str = "GET", params: dict[st
         query = "?" + urllib.parse.urlencode(params)
     try:
         request = urllib.request.Request(f"{base_url.rstrip('/')}{path}{query}", method=method)
+        service_token = os.getenv("AEGIS_SERVICE_TOKEN")
+        if service_token:
+            request.add_header("X-AEGIS-Service-Token", service_token)
         if body is not None:
             request.data = json.dumps(body).encode()
             request.add_header("Content-Type", "application/json")

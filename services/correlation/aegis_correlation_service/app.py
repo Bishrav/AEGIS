@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 import os
+import secrets
 from uuid import uuid4
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, Header, HTTPException
 
 from aegis_correlation.pipeline import IncidentPipeline
 from aegis_risk.audit import RiskAuditRecord
@@ -13,6 +14,12 @@ from .repositories import InMemoryIncidentRepository, PostgresIncidentRepository
 app = FastAPI(title="AEGIS Correlation Service", version="0.1.0")
 pipeline = IncidentPipeline()
 repository = PostgresIncidentRepository(os.environ["POSTGRES_DSN"]) if os.getenv("POSTGRES_DSN") else InMemoryIncidentRepository()
+
+
+def require_service_token(service_token: str | None) -> None:
+    expected = os.getenv("AEGIS_SERVICE_TOKEN")
+    if expected and not secrets.compare_digest(service_token or "", expected):
+        raise HTTPException(status_code=401, detail="service authentication required")
 
 
 def _publish(event_type: str, incident_id: str, payload: dict) -> None:
@@ -33,12 +40,14 @@ def health() -> dict[str, str]:
 
 
 @app.get("/incidents")
-def list_incidents() -> dict[str, object]:
+def list_incidents(x_aegis_service_token: str | None = Header(default=None)) -> dict[str, object]:
+    require_service_token(x_aegis_service_token)
     return {"incidents": repository.list()}
 
 
 @app.post("/correlate")
-def correlate(payload: dict) -> dict:
+def correlate(payload: dict, x_aegis_service_token: str | None = Header(default=None)) -> dict:
+    require_service_token(x_aegis_service_token)
     events = payload.get("events", [])
     if not events:
         raise HTTPException(status_code=400, detail="events must not be empty")
@@ -51,7 +60,8 @@ def correlate(payload: dict) -> dict:
 
 
 @app.get("/incidents/{incident_id}")
-def get_incident(incident_id: str) -> dict:
+def get_incident(incident_id: str, x_aegis_service_token: str | None = Header(default=None)) -> dict:
+    require_service_token(x_aegis_service_token)
     record = repository.get(incident_id)
     if record is None:
         raise HTTPException(status_code=404, detail="incident not found")
@@ -59,7 +69,8 @@ def get_incident(incident_id: str) -> dict:
 
 
 @app.patch("/incidents/{incident_id}/status")
-def update_status(incident_id: str, payload: dict) -> dict:
+def update_status(incident_id: str, payload: dict, x_aegis_service_token: str | None = Header(default=None)) -> dict:
+    require_service_token(x_aegis_service_token)
     status = str(payload.get("status", "")).upper()
     if status not in {"OPEN", "ACKNOWLEDGED", "INVESTIGATING", "RESOLVED"}:
         raise HTTPException(status_code=400, detail="invalid incident status")
@@ -71,7 +82,8 @@ def update_status(incident_id: str, payload: dict) -> dict:
 
 
 @app.post("/incidents/{incident_id}/notes")
-def add_note(incident_id: str, payload: dict) -> dict:
+def add_note(incident_id: str, payload: dict, x_aegis_service_token: str | None = Header(default=None)) -> dict:
+    require_service_token(x_aegis_service_token)
     note = str(payload.get("note", "")).strip()
     author = str(payload.get("author", "analyst")).strip() or "analyst"
     if not note:
