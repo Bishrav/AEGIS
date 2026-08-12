@@ -5,8 +5,10 @@ import os
 import urllib.error
 import urllib.parse
 import urllib.request
+import time
 
 from fastapi import FastAPI, HTTPException, Request, Response
+from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 from aegis_auth.rbac import Permission, UserContext, authorize
@@ -98,6 +100,31 @@ def incidents(request: Request) -> dict:
 def incident_evidence(incident_id: str, request: Request, query: str, top_k: int = 5) -> dict:
     require(request, Permission.VIEW_EVIDENCE)
     return _get_json(os.getenv("EVIDENCE_URL", "http://evidence:8000"), f"/incidents/{incident_id}/evidence", {"query": query, "top_k": str(top_k)})
+
+
+@app.get("/api/v1/events/stream")
+def event_stream(request: Request):
+    require(request, Permission.VIEW_INCIDENTS)
+
+    def events():
+        import json
+        import redis
+        client = redis.Redis.from_url(os.getenv("REDIS_URL", "redis://redis:6379/0"), decode_responses=True)
+        pubsub = client.pubsub()
+        pubsub.subscribe("aegis:incidents")
+        try:
+            while True:
+                message = pubsub.get_message(ignore_subscribe_messages=True, timeout=1.0)
+                if message and message.get("data"):
+                    yield f"event: incident\ndata: {message['data']}\n\n"
+                else:
+                    yield f"event: heartbeat\ndata: {json.dumps({'ts': time.time()})}\n\n"
+                time.sleep(1)
+        finally:
+            pubsub.close()
+            client.close()
+
+    return StreamingResponse(events(), media_type="text/event-stream", headers={"Cache-Control": "no-cache", "Connection": "keep-alive"})
 
 
 @app.patch("/api/v1/incidents/{incident_id}/status")

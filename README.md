@@ -186,7 +186,7 @@ Dashboard routes:
 - `/sources` — Source health
 - `/observability` — Runtime telemetry
 
-Phase 6 currently has live incident listing, RBAC-protected status updates, and analyst note creation. Live SSE/WebSocket updates and final end-to-end acceptance remain in progress.
+Phase 6 currently has live incident listing and detail pages, RBAC-protected status updates, analyst notes, Redis-backed SSE incident updates, and evidence search. Final end-to-end acceptance verification remains in progress.
 
 Railway deployment instructions are documented in [`docs/operations/railway.md`](docs/operations/railway.md). The repository is deployment-ready; the public service is not claimed as deployed until the Railway project and dependency bindings are configured.
 

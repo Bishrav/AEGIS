@@ -16,9 +16,9 @@ Phase 6 delivers the secured application surface: JWT authentication, RBAC, cons
 - Credentialed local CORS between the dashboard and API gateway.
 - Live incident listing through the authenticated gateway.
 - Analyst status mutation and note creation with RBAC enforcement.
+- Redis-backed incident event publication and authenticated SSE stream for dashboard updates.
 
 ## Next milestones
 
 - Replace seeded detail-page content with live incident and evidence responses.
-- Add SSE/WebSocket live update channel.
 - Complete Phase 6 acceptance verification and portfolio evidence.

@@ -15,6 +15,18 @@ pipeline = IncidentPipeline()
 repository = PostgresIncidentRepository(os.environ["POSTGRES_DSN"]) if os.getenv("POSTGRES_DSN") else InMemoryIncidentRepository()
 
 
+def _publish(event_type: str, incident_id: str, payload: dict) -> None:
+    redis_url = os.getenv("REDIS_URL")
+    if not redis_url:
+        return
+    try:
+        import json
+        import redis
+        redis.Redis.from_url(redis_url).publish("aegis:incidents", json.dumps({"type": event_type, "incident_id": incident_id, "payload": payload}))
+    except Exception:
+        pass
+
+
 @app.get("/health")
 def health() -> dict[str, str]:
     return {"status": "ok", "service": "correlation"}
@@ -34,6 +46,7 @@ def correlate(payload: dict) -> dict:
     result = pipeline.process(events, incident_id)
     audit = RiskAuditRecord.from_result(incident_id, result.risk).to_dict()
     repository.save(result.incident, result.risk, audit)
+    _publish("incident.updated", incident_id, repository.get(incident_id) or {})
     return repository.get(incident_id) or {}
 
 
@@ -53,6 +66,7 @@ def update_status(incident_id: str, payload: dict) -> dict:
     record = repository.update_status(incident_id, status)
     if record is None:
         raise HTTPException(status_code=404, detail="incident not found")
+    _publish("incident.status_changed", incident_id, {"status": status})
     return record
 
 
@@ -65,4 +79,5 @@ def add_note(incident_id: str, payload: dict) -> dict:
     record = repository.add_note(incident_id, note, author)
     if record is None:
         raise HTTPException(status_code=404, detail="incident not found")
+    _publish("incident.note_added", incident_id, {"author": author, "note": note})
     return record

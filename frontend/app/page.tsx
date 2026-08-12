@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { LiveBadge } from "./components/live-badge";
 
 type User = { user_id: string; role: string };
 
@@ -39,7 +40,7 @@ export default function Dashboard() {
       <div className="sidebar-footer"><span className="pulse" /> Systems nominal<br /><small>v0.6.0 · Nepal flood MVP</small></div>
     </aside>
     <section className="content">
-      <header className="topbar"><div><p className="eyebrow">WEDNESDAY · 12 AUG 2026</p><h1>Flood intelligence overview</h1></div><div className="user-area">{user ? <><span className="avatar">{user.role[0]}</span><span>{user.role}</span></> : <button className="button" onClick={() => setLoginOpen(true)}>Sign in</button>}</div></header>
+      <header className="topbar"><div><p className="eyebrow">WEDNESDAY · 12 AUG 2026</p><h1>Flood intelligence overview</h1></div><div className="user-area"><LiveBadge />{user ? <><span className="avatar">{user.role[0]}</span><span>{user.role}</span></> : <button className="button" onClick={() => setLoginOpen(true)}>Sign in</button>}</div></header>
       <section id="overview" className="metrics"><Metric label="Active incidents" value="12" hint="+3 since 06:00" tone="red" /><Metric label="Critical risk" value="02" hint="Requires attention" tone="amber" /><Metric label="Signals processed" value="4,281" hint="Last 24 hours" /><Metric label="Source health" value="98.4%" hint="4 / 4 connected" tone="green" /></section>
       <section className="hero-grid"><div className="map-card"><div className="card-heading"><div><p className="eyebrow">SPATIAL VIEW</p><h2>Risk activity map</h2></div><span className="live-tag"><span className="pulse" /> LIVE REPLAY</span></div><div className="map"><div className="map-grid" /><div className="mountain m1" /><div className="mountain m2" /><Pin x="58%" y="34%" level="critical" label="Sindhupalchok" /><Pin x="48%" y="61%" level="high" label="Melamchi" /><Pin x="72%" y="50%" level="moderate" label="Dolakha" /><div className="map-label">NEPAL · FLOOD RISK SIGNALS</div></div></div><div className="risk-card"><p className="eyebrow">RISK DISTRIBUTION</p><h2>Current posture</h2><div className="donut"><strong>12</strong><span>active<br />incidents</span></div><div className="legend"><Legend color="red" label="Critical" value="2" /><Legend color="orange" label="High" value="4" /><Legend color="yellow" label="Moderate" value="6" /></div></div></section>
       <section id="incidents" className="panel"><div className="card-heading"><div><p className="eyebrow">PRIORITIZED QUEUE</p><h2>Active incidents</h2></div><button className="text-button">View all incidents →</button></div><div className="incident-list">{incidents.map((incident) => <article className="incident" key={incident.id}><div className={`severity ${incident.level.toLowerCase()}`} /><div className="incident-main"><div className="incident-title"><strong>{incident.title}</strong><span className={`badge ${incident.level.toLowerCase()}`}>{incident.level}</span></div><p>{incident.id} · {incident.district} · {incident.age}</p></div><div className="score"><strong>{incident.score}</strong><small>risk score</small></div><button className="arrow">→</button></article>)}</div></section>

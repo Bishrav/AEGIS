@@ -86,6 +86,8 @@ class PostgresIncidentRepository:
                 "policy_version": risk.policy_version,
             },
             "audit": audit,
+            "status": "OPEN",
+            "notes": [],
         }
         with self.connection.cursor() as cursor:
             cursor.execute(

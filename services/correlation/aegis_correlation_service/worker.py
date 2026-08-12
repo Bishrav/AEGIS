@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import json
 from collections import defaultdict
 
 from aegis_correlation.pipeline import IncidentPipeline
@@ -27,6 +28,13 @@ class CorrelationWorker:
             result = self.pipeline.process(bucket, incident_id)
             audit = RiskAuditRecord.from_result(incident_id, result.risk).to_dict()
             self.repository.save(result.incident, result.risk, audit)
+            redis_url = os.getenv("REDIS_URL")
+            if redis_url:
+                try:
+                    import redis
+                    redis.Redis.from_url(redis_url).publish("aegis:incidents", json.dumps({"type": "incident.updated", "incident_id": incident_id, "payload": self.repository.get(incident_id)}))
+                except Exception:
+                    pass
             self.buckets.pop(district, None)
 
 
