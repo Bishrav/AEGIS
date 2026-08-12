@@ -71,6 +71,12 @@ python -m unittest tests.phase7.test_replay_acceptance -v
 - Replaced the graph placeholder geometry with an SVG topology: directional edges, relationship labels, selectable nodes, node metadata, highlighted connections, traversal filtering, and Reset view.
 - Full route smoke test passed for `/`, `/incidents`, `/evidence`, `/graph`, `/models`, `/sources`, and `/observability`.
 
+## Ninth milestone — deployment and recruiter evidence package
+
+- Added [`tests/e2e/test_deployment_smoke.py`](../../tests/e2e/test_deployment_smoke.py), an environment-driven smoke contract for `/health`, `/ready`, and `/sources/health` on Railway or any deployed ingestion URL.
+- Added [`docs/portfolio/recruiter-demo.md`](../portfolio/recruiter-demo.md) with a two-minute walkthrough, engineering talking points, screenshot checklist, and explicit deployment limitations.
+- The deployment test intentionally skips when `AEGIS_DEPLOYMENT_URL` is unset and avoids live provider pulls during routine verification.
+
 ## Fifth milestone — reproducible load evidence
 
 - Added [`benchmarks/phase7_load.py`](../../benchmarks/phase7_load.py), a standard-library benchmark for API health, incident listing, and evidence search.

@@ -14,6 +14,7 @@ Autonomous Event & Global Intelligence System — Nepal flood-risk intelligence 
 | Delivery roadmap | [`docs/roadmap.md`](docs/roadmap.md) |
 | Operations runbook | [`docs/operations/local-development.md`](docs/operations/local-development.md) |
 | Railway deployment | [`docs/operations/railway.md`](docs/operations/railway.md) |
+| Recruiter demo | [`docs/portfolio/recruiter-demo.md`](docs/portfolio/recruiter-demo.md) |
 | Local dashboard | [http://localhost:3001](http://localhost:3001) |
 | API gateway docs | [http://localhost:8000/docs](http://localhost:8000/docs) |
 
@@ -189,6 +190,8 @@ Dashboard routes:
 Phase 6 is complete: live incident listing and detail pages, RBAC-protected status updates, analyst notes, Redis-backed SSE incident updates, evidence search, Docker verification, and authenticated end-to-end acceptance checks are documented in [`docs/phase-reports/phase-6-progress.md`](docs/phase-reports/phase-6-progress.md).
 
 Phase 7 progress is documented in [`docs/phase-reports/phase-7-progress.md`](docs/phase-reports/phase-7-progress.md). Its first milestone is a repeatable local end-to-end acceptance harness covering authentication, evidence, correlation, risk, analyst actions, and live updates.
+
+The recruiter-ready walkthrough and screenshot checklist are in [`docs/portfolio/recruiter-demo.md`](docs/portfolio/recruiter-demo.md). A public Railway deployment is only claimed after the deployment smoke test passes against a configured project.
 
 Railway deployment instructions are documented in [`docs/operations/railway.md`](docs/operations/railway.md). The repository is deployment-ready; the public service is not claimed as deployed until the Railway project and dependency bindings are configured.
 
