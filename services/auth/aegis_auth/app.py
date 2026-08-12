@@ -46,6 +46,13 @@ def _secret() -> str:
     return secret
 
 
+def authenticate_credentials(username: str, password: str) -> UserContext:
+    account = _users().get(username)
+    if not account or not hmac.compare_digest(password, account["password"]):
+        raise HTTPException(status_code=401, detail="invalid credentials")
+    return UserContext(account["user_id"], Role(account["role"]))
+
+
 @app.get("/health")
 def health() -> dict[str, str]:
     return {"status": "ok", "service": "auth"}
@@ -55,10 +62,7 @@ def health() -> dict[str, str]:
 def login(payload: dict, response: Response) -> dict[str, str]:
     username = str(payload.get("username", ""))
     password = str(payload.get("password", ""))
-    account = _users().get(username)
-    if not account or not hmac.compare_digest(password, account["password"]):
-        raise HTTPException(status_code=401, detail="invalid credentials")
-    user = UserContext(account["user_id"], Role(account["role"]))
+    user = authenticate_credentials(username, password)
     token = issue_token(user, _secret())
     response.set_cookie(COOKIE_NAME, token, httponly=True, secure=os.getenv("ENVIRONMENT") == "production", samesite="lax", max_age=1800)
     return {"user_id": user.user_id, "role": user.role.value}
