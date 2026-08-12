@@ -287,6 +287,8 @@ services:
       - "${GRAFANA_PORT:-3000}:3000"
     volumes:
       - grafana_data:/var/lib/grafana
+      - ./infrastructure/monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./infrastructure/monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
 
 volumes:
   postgres_data:

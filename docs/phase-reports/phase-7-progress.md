@@ -60,3 +60,9 @@ python -m unittest tests.phase7.test_replay_acceptance -v
 - Added [`benchmarks/phase7_load.py`](../../benchmarks/phase7_load.py), a standard-library benchmark for API health, incident listing, and evidence search.
 - It reports success/error counts, p50 latency, p95 latency, and throughput, and writes a machine-specific JSON artifact under `artifacts/`.
 - The benchmark is intentionally parameterized by request count and worker count so results can be compared across local hardware or deployment targets.
+
+## Sixth milestone — reproducible observability dashboard
+
+- Added repository-managed Grafana provisioning for the Prometheus datasource.
+- Added an AEGIS Platform Overview dashboard with Prometheus health, scrape duration, and scrape sample panels.
+- Docker Compose now mounts the datasource, dashboard provider, and dashboard JSON automatically, so a fresh local stack opens with the same observability configuration.
