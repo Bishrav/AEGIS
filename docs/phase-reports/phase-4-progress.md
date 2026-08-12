@@ -9,10 +9,11 @@
 - Incident-to-risk component mapping.
 - Neo4j projection/query store boundary.
 - Immutable risk audit records preserving policy version and score components.
+- Correlation service boundary with normalized Kafka consumer, replay API, and Postgres repository.
 
 ## Remaining Phase 4 work
 
-- Connect Kafka normalized events to the correlation service.
+- Start the Kafka consumer as a managed worker in the runtime deployment.
 - Run Neo4j projection integration tests.
 - Persist risk updates and audit records.
 - Complete end-to-end replay from four signals to one incident and risk result.
