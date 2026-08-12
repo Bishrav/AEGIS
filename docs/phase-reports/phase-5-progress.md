@@ -9,6 +9,9 @@
 - Recall@K evaluation helper and lexical/semantic/hybrid comparison modes.
 - Provider-neutral explanation interface with a mock provider.
 - Evidence-grounded explanation boundary that rejects empty evidence and returns internal citation IDs.
+- Supabase/Postgres-compatible migration for documents, evidence chunks, and vector embeddings.
+- Idempotent evidence store contract and evidence search API for incident retrieval.
+- Citation validation helpers for unknown and missing evidence references.
 
 ## Remaining Phase 5 work
 

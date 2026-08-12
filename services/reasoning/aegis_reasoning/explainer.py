@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from typing import Protocol
 
 from aegis_rag.models import EvidencePackage
+from aegis_rag.citations import validate_citations
 
 
 class LLMProvider(Protocol):
@@ -34,4 +35,6 @@ class EvidenceGroundedExplainer:
         text = self.provider.generate(prompt).strip()
         if not text:
             raise ValueError("provider returned an empty explanation")
-        return Explanation(text, evidence.evidence_ids, type(self.provider).__name__)
+        citation_ids = evidence.evidence_ids
+        validate_citations(evidence, citation_ids)
+        return Explanation(text, citation_ids, type(self.provider).__name__)

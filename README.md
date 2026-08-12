@@ -157,6 +157,8 @@ Phase 4 completion evidence is documented in [`docs/phase-reports/phase-4-progre
 
 Phase 5 progress is documented in [`docs/phase-reports/phase-5-progress.md`](docs/phase-reports/phase-5-progress.md), including stable evidence IDs, hybrid retrieval, Recall@K evaluation, and the provider-neutral explanation boundary.
 
+The current Phase 5 slice also includes a Supabase/Postgres-compatible evidence migration and an incident evidence search API. Remote migration execution remains pending until the Supabase MCP connection is available in the active Codex session.
+
 Railway deployment instructions are documented in [`docs/operations/railway.md`](docs/operations/railway.md). The repository is deployment-ready; the public service is not claimed as deployed until the Railway project and dependency bindings are configured.
 
 ## Scope Boundaries
