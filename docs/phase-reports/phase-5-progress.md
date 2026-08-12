@@ -12,10 +12,12 @@
 - Supabase/Postgres-compatible migration for documents, evidence chunks, and vector embeddings.
 - Idempotent evidence store contract and evidence search API for incident retrieval.
 - Citation validation helpers for unknown and missing evidence references.
+- Citation-enforcing reasoning service with mock and OpenAI-compatible provider adapters.
+- Dockerized evidence and reasoning services with health checks and configurable runtime providers.
 
 ## Remaining Phase 5 work
 
 - Add PostgreSQL/pgvector persistence and document ingestion endpoints.
-- Add production embedding and LLM provider adapters behind environment configuration.
-- Add citation validation and end-to-end incident evidence API.
+- Execute the Supabase migration through the authenticated MCP connection.
+- Replace the offline hashing embedder with a configured production embedding backend.
 - Publish the Phase 5 evaluation report and CI evidence.

@@ -36,6 +36,8 @@ class HybridRetriever:
 
     def add(self, chunks: Iterable[dict[str, str]]) -> None:
         for chunk in chunks:
+            if any(existing["evidence_id"] == chunk["evidence_id"] for existing in self._chunks):
+                continue
             self._chunks.append(dict(chunk))
             self._vectors.append(self.embedder.embed(chunk["text"]))
 

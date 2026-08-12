@@ -5,6 +5,7 @@ from typing import Protocol
 
 from aegis_rag.models import EvidencePackage
 from aegis_rag.citations import validate_citations
+from aegis_rag.citations import extract_citations
 
 
 class LLMProvider(Protocol):
@@ -13,7 +14,8 @@ class LLMProvider(Protocol):
 
 class MockLLMProvider:
     def generate(self, prompt: str) -> str:
-        return "The incident is supported by the retrieved historical evidence."
+        first_reference = prompt.split("[")[1].split("]")[0]
+        return f"The incident is supported by the retrieved historical evidence [{first_reference}]."
 
 
 @dataclass(frozen=True)
@@ -35,6 +37,6 @@ class EvidenceGroundedExplainer:
         text = self.provider.generate(prompt).strip()
         if not text:
             raise ValueError("provider returned an empty explanation")
-        citation_ids = evidence.evidence_ids
+        citation_ids = extract_citations(text)
         validate_citations(evidence, citation_ids)
         return Explanation(text, citation_ids, type(self.provider).__name__)
