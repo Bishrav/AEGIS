@@ -57,6 +57,20 @@ services:
       timeout: 3s
       retries: 10
 
+  correlation-worker:
+    build:
+      context: .
+      dockerfile: services/correlation/Dockerfile
+    command: ["python", "-m", "aegis_correlation_service.worker"]
+    depends_on:
+      redpanda:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: redpanda:9092
+      POSTGRES_DSN: postgresql://aegis:aegis_dev_password@postgres:5432/aegis
+
   postgres:
     image: postgis/postgis:16-3.4
     environment:
